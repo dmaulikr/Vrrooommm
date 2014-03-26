@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B1A529918E07492003D6142 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1A529818E07492003D6142 /* Track.m */; };
 		4B4D98B718E0623C00C54757 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B618E0623C00C54757 /* QuartzCore.framework */; };
 		4B4D98B918E0623C00C54757 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B818E0623C00C54757 /* OpenGLES.framework */; };
 		4B4D98BB18E0623C00C54757 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98BA18E0623C00C54757 /* OpenAL.framework */; };
@@ -212,6 +213,11 @@
 		4B4D9B6018E0623F00C54757 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4D9B5F18E0623F00C54757 /* AppDelegate.m */; };
 		4B4D9B6318E0623F00C54757 /* HelloWorldScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4D9B6218E0623F00C54757 /* HelloWorldScene.m */; };
 		4B4D9B6618E0623F00C54757 /* IntroScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4D9B6518E0623F00C54757 /* IntroScene.m */; };
+		4B6026A818E22BB70025B57C /* Car.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6026A718E22BB70025B57C /* Car.m */; };
+		4BA333C018E259D4003DFE20 /* redCar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BA333BF18E259D4003DFE20 /* redCar.png */; };
+		4BDC5AB718E1208000157DA3 /* track1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5AB618E1208000157DA3 /* track1.png */; };
+		4BDC5AB918E1212900157DA3 /* track2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5AB818E1212900157DA3 /* track2.png */; };
+		4BDC5ABB18E121AA00157DA3 /* track3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5ABA18E121AA00157DA3 /* track3.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -225,6 +231,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B1A529718E07492003D6142 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = Classes/Track.h; sourceTree = "<group>"; };
+		4B1A529818E07492003D6142 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Track.m; path = Classes/Track.m; sourceTree = "<group>"; };
 		4B4D98B318E0623C00C54757 /* KickAssProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickAssProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B4D98B618E0623C00C54757 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4B4D98B818E0623C00C54757 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -653,6 +661,12 @@
 		4B4D9B6218E0623F00C54757 /* HelloWorldScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HelloWorldScene.m; path = Classes/HelloWorldScene.m; sourceTree = "<group>"; };
 		4B4D9B6418E0623F00C54757 /* IntroScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IntroScene.h; path = Classes/IntroScene.h; sourceTree = "<group>"; };
 		4B4D9B6518E0623F00C54757 /* IntroScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = IntroScene.m; path = Classes/IntroScene.m; sourceTree = "<group>"; };
+		4B6026A618E22BB70025B57C /* Car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Car.h; path = Classes/Car.h; sourceTree = "<group>"; };
+		4B6026A718E22BB70025B57C /* Car.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Car.m; path = Classes/Car.m; sourceTree = "<group>"; };
+		4BA333BF18E259D4003DFE20 /* redCar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCar.png; sourceTree = "<group>"; };
+		4BDC5AB618E1208000157DA3 /* track1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track1.png; sourceTree = "<group>"; };
+		4BDC5AB818E1212900157DA3 /* track2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track2.png; sourceTree = "<group>"; };
+		4BDC5ABA18E121AA00157DA3 /* track3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track3.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -724,6 +738,10 @@
 		4B4D98CF18E0623C00C54757 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BA333BF18E259D4003DFE20 /* redCar.png */,
+				4BDC5ABA18E121AA00157DA3 /* track3.png */,
+				4BDC5AB818E1212900157DA3 /* track2.png */,
+				4BDC5AB618E1208000157DA3 /* track1.png */,
 				4B4D98D018E0623C00C54757 /* Default.png */,
 				4B4D98D218E0623C00C54757 /* Default@2x.png */,
 				4B4D98D418E0623C00C54757 /* Default-568h@2x.png */,
@@ -1546,6 +1564,10 @@
 				4B4D9B6218E0623F00C54757 /* HelloWorldScene.m */,
 				4B4D9B6418E0623F00C54757 /* IntroScene.h */,
 				4B4D9B6518E0623F00C54757 /* IntroScene.m */,
+				4B1A529718E07492003D6142 /* Track.h */,
+				4B1A529818E07492003D6142 /* Track.m */,
+				4B6026A618E22BB70025B57C /* Car.h */,
+				4B6026A718E22BB70025B57C /* Car.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1620,9 +1642,11 @@
 			files = (
 				4B4D98D318E0623C00C54757 /* Default@2x.png in Resources */,
 				4B4D98E618E0623C00C54757 /* Icon-120.png in Resources */,
+				4BDC5AB918E1212900157DA3 /* track2.png in Resources */,
 				4B4D9AEA18E0623E00C54757 /* LICENSE_CCBReader.txt in Resources */,
 				4B4D98DC18E0623C00C54757 /* Icon@2x.png in Resources */,
 				4B4D98EE18E0623C00C54757 /* Icon-Small@2x.png in Resources */,
+				4BDC5ABB18E121AA00157DA3 /* track3.png in Resources */,
 				4B4D98E018E0623C00C54757 /* Icon-72@2x.png in Resources */,
 				4B4D98D118E0623C00C54757 /* Default.png in Resources */,
 				4B4D98DA18E0623C00C54757 /* Icon.png in Resources */,
@@ -1635,8 +1659,10 @@
 				4B4D9A2C18E0623E00C54757 /* LICENSE_cocos2d.txt in Resources */,
 				4B4D98D518E0623C00C54757 /* Default-568h@2x.png in Resources */,
 				4B4D98F518E0623C00C54757 /* iTunesArtwork in Resources */,
+				4BDC5AB718E1208000157DA3 /* track1.png in Resources */,
 				4B4D98F018E0623C00C54757 /* Icon-Spotlight-iOS7.png in Resources */,
 				4B4D98E418E0623C00C54757 /* Icon-76@2x.png in Resources */,
+				4BA333C018E259D4003DFE20 /* redCar.png in Resources */,
 				4B4D9B5818E0623F00C54757 /* LICENSE_Chipmunk.txt in Resources */,
 				4B4D98F218E0623C00C54757 /* Icon-Spotlight-iOS7@2x.png in Resources */,
 				4B4D98E218E0623C00C54757 /* Icon-76.png in Resources */,
@@ -1762,6 +1788,7 @@
 				4B4D997B18E0623D00C54757 /* CCPhysicsNode.m in Sources */,
 				4B4D9A6118E0623E00C54757 /* ALSoundSourcePool.m in Sources */,
 				4B4D997018E0623D00C54757 /* CCParticleSystemBase.m in Sources */,
+				4B1A529918E07492003D6142 /* Track.m in Sources */,
 				4B4D9A0718E0623D00C54757 /* CCColor.m in Sources */,
 				4B4D9A5418E0623E00C54757 /* ALChannelSource.m in Sources */,
 				4B4D990018E0623C00C54757 /* CCActionCatmullRom.m in Sources */,
@@ -1781,6 +1808,7 @@
 				4B4D9AB618E0623E00C54757 /* aabb.c in Sources */,
 				4B4D9AE018E0623E00C54757 /* CCBsequence.m in Sources */,
 				4B4D994118E0623D00C54757 /* CCLabelAtlas.m in Sources */,
+				4B6026A818E22BB70025B57C /* Car.m in Sources */,
 				4B4D99DC18E0623D00C54757 /* cocos2d.m in Sources */,
 				4B4D9A6418E0623E00C54757 /* ALSource.m in Sources */,
 				4B4D996C18E0623D00C54757 /* CCParticleSystem.m in Sources */,
@@ -1989,6 +2017,7 @@
 				4B4D9B6B18E0623F00C54757 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4B4D9B6C18E0623F00C54757 /* Build configuration list for PBXNativeTarget "KickAssProject" */ = {
 			isa = XCConfigurationList;
@@ -1997,6 +2026,7 @@
 				4B4D9B6E18E0623F00C54757 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

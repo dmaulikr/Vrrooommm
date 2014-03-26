@@ -17,6 +17,7 @@
 @implementation HelloWorldScene
 {
     CCSprite *_sprite;
+    Car *redCar;
 }
 
 // -----------------------------------------------------------------------
@@ -33,6 +34,7 @@
 - (id)init
 {
     // Apple recommend assigning self with supers return value
+    
     self = [super init];
     if (!self) return(nil);
     
@@ -43,14 +45,11 @@
     CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f]];
     [self addChild:background];
     
-    // Add a sprite
-    _sprite = [CCSprite spriteWithImageNamed:@"Icon-72.png"];
-    _sprite.position  = ccp(self.contentSize.width/2,self.contentSize.height/2);
-    [self addChild:_sprite];
-    
-    // Animate sprite with action
-    CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:1.5f angle:360];
-    [_sprite runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
+    //Create a line (Eventually a track)
+    CCDrawNode* node = [[CCDrawNode alloc] init];
+    CCColor* red = [CCColor colorWithRed:1 green:0 blue:0];
+    [node drawSegmentFrom:ccp(200, 200) to:ccp(600, 200) radius:5 color: red];
+    [self addChild:node];
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
@@ -58,12 +57,34 @@
     backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
+    
+    //Create a Car
+    /*_sprite = [CCSprite spriteWithImageNamed:@"redCar.png"];
+    _sprite.position  = ccp(self.contentSize.width/2,self.contentSize.height/2);
+    [self addChild:_sprite];
+     */
+    
+    redCar = [[Car alloc] initCarWithMass:50 withXPos:100 withYPos:400 file:@"redCar.png"];
+    //Car *car = [Car spriteWithImageNamed:@"redCar.png"];
+    redCar.position = ccp([redCar x_Pos], [redCar y_Pos]);
+    [self addChild:redCar];
 
+    //Track *track = [[Track alloc] initTrack:@"track2.png"];
+    //[track getTracks];
+    
     // done
 	return self;
 }
 
 // -----------------------------------------------------------------------
+
+- (void) draw
+{
+    
+    //[redCar draw];
+    //NSLog(@"In Draw");
+    //ccDrawLine( ccp(200, 200), ccp(300, 300) );
+}
 
 - (void)dealloc
 {
@@ -100,8 +121,9 @@
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self];
     
+    //[redCar update];
     // Log touch location
-    CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
+    //CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
     
     // Move our sprite to touch location
     CCActionMoveTo *actionMove = [CCActionMoveTo actionWithDuration:1.0f position:touchLoc];
