@@ -18,6 +18,8 @@
 {
     CCSprite *_sprite;
     Car *redCar;
+    BOOL isMoving;
+    float accl;
 }
 
 // -----------------------------------------------------------------------
@@ -37,6 +39,8 @@
     
     self = [super init];
     if (!self) return(nil);
+    
+    accl = 0.2;
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
@@ -66,7 +70,6 @@
     
     redCar = [[Car alloc] initCarWithMass:50 withXPos:100 withYPos:400 file:@"redCar.png"];
     //Car *car = [Car spriteWithImageNamed:@"redCar.png"];
-    redCar.position = ccp([redCar x_Pos], [redCar y_Pos]);
     [self addChild:redCar];
 
     //Track *track = [[Track alloc] initTrack:@"track2.png"];
@@ -77,6 +80,23 @@
 }
 
 // -----------------------------------------------------------------------
+
+- (void) update:(CCTime)delta
+{
+    if (isMoving) {
+        //accelerate the car
+        [redCar setX_Vel:[redCar x_Vel]-accl];
+        [redCar update];
+    }
+    else
+    {
+        if ([redCar x_Vel] < 0) {
+            NSLog(@"Slowing Down");
+            [redCar setX_Vel:[redCar x_Vel]+accl];
+            [redCar update];
+        }
+    }
+}
 
 - (void) draw
 {
@@ -119,9 +139,9 @@
 // -----------------------------------------------------------------------
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    isMoving = YES;
     CGPoint touchLoc = [touch locationInNode:self];
-    
-    //[redCar update];
+    //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     // Log touch location
     //CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
     
@@ -129,6 +149,11 @@
     CCActionMoveTo *actionMove = [CCActionMoveTo actionWithDuration:1.0f position:touchLoc];
     [_sprite runAction:actionMove];
 }
+
+- (void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event{
+    isMoving = NO;
+}
+
 
 // -----------------------------------------------------------------------
 #pragma mark - Button Callbacks

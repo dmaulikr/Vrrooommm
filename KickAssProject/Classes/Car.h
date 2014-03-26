@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 #import "cocos2d-ui.h"
 
-@interface Car : CCSprite
+@interface Car : CCNode
 
 @property float mass;
 @property float x_Pos;
