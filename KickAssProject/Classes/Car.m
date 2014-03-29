@@ -11,6 +11,7 @@
 @implementation Car
 {
     CCSprite *carSprite;
+    float rot;
 }
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *)filename
@@ -22,15 +23,18 @@
         
         [self setX_Pos:x_Pos];
         [self setY_Pos:y_Pos];
+        rot = 0;
         carSprite = [CCSprite spriteWithImageNamed:filename];
         carSprite.position = ccp(self.x_Pos, self.y_Pos);
         carSprite.scaleX = scalex;
         carSprite.scaleY = scaley;
         [self addChild:carSprite];
-        NSLog(@"I created a Car at (%f, %f)", self.x_Pos, self.y_Pos);
+        
         [self setMass:mass];
-        [self setCar_Width:self.contentSize.width];
-        [self setCar_Height:self.contentSize.height];
+        [self setCar_Width:[carSprite boundingBox].size.width*scalex];
+        [self setCar_Height:[carSprite boundingBox].size.height*scaley];
+        NSLog(@"I created a Car at (%f, %f) width: %f height: %f", self.x_Pos, self.y_Pos, self.car_Width, self.car_Height);
+        
         
         
     }
@@ -39,15 +43,18 @@
 
 - (void) update
 {
-    if ([self x_Pos] > 900 ) {
-        self.direction = @"Left";
-    }
-    if ([self x_Pos] < 100) {
-        self.direction = @"Right";
-    }
-    [self setX_Pos:[self x_Pos]-[self x_Vel]];
-    [self setY_Pos:[self y_Pos]-[self y_Vel]];
+    float radian;
+    self.angle += 1.0;
+    self.x_Pos = self.x_Pos + self.x_Vel + (float)cos(radian);
+    self.y_Pos = self.y_Pos + self.y_Vel + (float)sin(radian);
+    //[self setX_Pos:[self x_Pos]-[self x_Vel]];
+    //[self setY_Pos:[self y_Pos]-[self y_Vel]];
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
+}
+
+- (void) rotateCar
+{
+    //carSprite.rotation = -10;
 }
 
 - (void) draw

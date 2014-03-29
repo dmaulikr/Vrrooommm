@@ -24,6 +24,7 @@
     CGPoint *location;
     float scale_x;
     float scale_y;
+    float angle;
     float accl;
 }
 
@@ -94,18 +95,25 @@
     ccColor4B color = buffer[0];
     NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
     
+    float radian;
+    angle += 1.0;
     
     if (isMoving) {
-        [redCar setX_Vel:[redCar x_Vel]-accl];
-        [redCar update];
+        if (color.g > 0) {
+            [redCar setX_Vel:[redCar x_Vel]+accl];
+            [redCar setY_Vel:[redCar y_Vel]+accl];
+            [redCar update];
+            
+        }
+        else
+        {
+            [redCar setX_Vel:[redCar x_Vel]+accl];
+            [redCar update];
+ 
+        }
+        
     }
     
-    /*
-    else if (color.g > 0) {
-        [redCar setY_Vel:[redCar y_Vel]-accl];
-        [redCar setX_Vel:0];
-    }
-    */
     else
     {
         if ([redCar x_Vel] < 0) {
