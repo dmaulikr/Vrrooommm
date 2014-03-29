@@ -19,7 +19,7 @@
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
-    BOOL isMoving;
+    BOOL isBeingTouched;
     Track *track;
     UIImage *bimage;
     CGPoint *location;
@@ -104,44 +104,29 @@
 
 - (void) update:(CCTime)delta
 {
-    ccColor4B *buffer = malloc(sizeof(ccColor4B));
-    if(winSize.width == 2048){
-        glReadPixels(redCar.x_Pos/scale_x*2, winSize.height - redCar.y_Pos/scale_y*2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    } else {
-        glReadPixels(redCar.x_Pos/scale_x, winSize.height - redCar.y_Pos/scale_y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    }
-    
+    ccColor4B* buffer = malloc(sizeof(ccColor4B));
+    int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
+    float x = redCar.x_Pos / scale_x * dpi;
+    float y = winSize.height - redCar.y_Pos / scale_y * dpi;
+    glReadPixels(x + 5, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     ccColor4B color = buffer[0];
     NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
-    
-    if (isMoving) {
-        if (color.g > 0) {
-            [redCar setX_Vel:[redCar x_Vel]+accl];
-            [redCar setY_Vel:[redCar y_Vel]+accl];
-            [redCar update];
-            
-        }
-        else
-        {
-            [redCar setX_Vel:[redCar x_Vel]+accl];
-            [redCar update];
- 
-        }
-        
+    if (/* Is white? */ color.r == 255 && color.g == 255 && color.b == 255) {
+        NSLog(@"Turn NOW");
     }
-    
-    else
-    {
-        if ([redCar x_Vel] < 0) {
-            //NSLog(@"Slowing Down");
-            [redCar setX_Vel:[redCar x_Vel]+accl];
-            [redCar update];
-        }
+    if (isBeingTouched) {
+        [redCar setX_Vel:[redCar x_Vel] + accl];
+        [redCar update];
     }
-    NSString *positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
-	[mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
-			   toPeers:mPeers
-		  withDataMode:GKSendDataReliable error:nil];
+    if (!isBeingTouched && [redCar x_Vel] > 0) {
+        [redCar setX_Vel:[redCar x_Vel] - accl];
+        [redCar update];
+    }
+    NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
+    [mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
+               toPeers:mPeers
+          withDataMode:GKSendDataReliable
+                 error:nil];
 }
 
 - (void)dealloc
@@ -179,7 +164,7 @@
 // -----------------------------------------------------------------------
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    isMoving = YES;
+    isBeingTouched = YES;
     CGPoint touchLoc = [touch locationInNode:self];
     //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     // Log touch location
@@ -191,7 +176,7 @@
 }
 
 - (void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event{
-    isMoving = NO;
+    isBeingTouched = NO;
 }
 
 
