@@ -20,7 +20,14 @@
     CCButton* networkButton;
     Car *redCar;
     BOOL isMoving;
+    Track *track;
+    UIImage *bimage;
+    CGPoint *location;
+    float scale_x;
+    float scale_y;
+    float angle;
     float accl;
+    CGSize winSize;
 }
 
 // -----------------------------------------------------------------------
@@ -48,8 +55,20 @@
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
-    // Create a colored background (Dark Grey)
-    CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f]];
+    bimage = [[UIImage alloc] initWithContentsOfFile:@"track1.png"];
+    
+    // Create a colored background
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"track1.png"];
+    background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    
+    //scale fo the ipod screen
+    winSize = [[CCDirector sharedDirector] viewSizeInPixels];
+    scale_x = self.contentSize.width/1024;
+    scale_y = self.contentSize.height/768;
+    
+    background.scaleX = scale_x;
+    background.scaleY = scale_y;
+    
     [self addChild:background];
     
     //GameKit Network
@@ -62,30 +81,19 @@
     [self addChild:networkButton];
     
     //Create a line (Eventually a track)
-    CCDrawNode* node = [[CCDrawNode alloc] init];
-    CCColor* red = [CCColor colorWithRed:0 green:0 blue:1];
-    [node drawSegmentFrom:ccp(100, 200) to:ccp(900, 200) radius:5 color: red];
-    [self addChild:node];
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
+    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
+    backButton.color = black;
     backButton.positionType = CCPositionTypeNormalized;
     backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
-    
-    //Create a Car
-    /*_sprite = [CCSprite spriteWithImageNamed:@"redCar.png"];
-    _sprite.position  = ccp(self.contentSize.width/2,self.contentSize.height/2);
-    [self addChild:_sprite];
-     */
-    
-    redCar = [[Car alloc] initCarWithMass:50 withXPos:100 withYPos:200 file:@"redCar.png"];
-    [redCar setDirection:@"Right"];
-    [self addChild:redCar];
 
-    //Track *track = [[Track alloc] initTrack:@"track2.png"];
-    //[track getTracks];
+    redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:25*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
+    
+    [self addChild:redCar];
     
     // done
 	return self;
@@ -95,12 +103,32 @@
 
 - (void) update:(CCTime)delta
 {
-    if (isMoving) {
-        //accelerate the car
-        [self moveCarOnLine];
-        //[redCar setX_Vel:[redCar x_Vel]-accl];
-        //[redCar update];
+    ccColor4B *buffer = malloc(sizeof(ccColor4B));
+    if(winSize.width == 2048){
+        glReadPixels(redCar.x_Pos/scale_x*2, winSize.height - redCar.y_Pos/scale_y*2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    } else {
+        glReadPixels(redCar.x_Pos/scale_x, winSize.height - redCar.y_Pos/scale_y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     }
+    
+    ccColor4B color = buffer[0];
+    NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
+    
+    if (isMoving) {
+        if (color.g > 0) {
+            [redCar setX_Vel:[redCar x_Vel]+accl];
+            [redCar setY_Vel:[redCar y_Vel]+accl];
+            [redCar update];
+            
+        }
+        else
+        {
+            [redCar setX_Vel:[redCar x_Vel]+accl];
+            [redCar update];
+ 
+        }
+        
+    }
+    
     else
     {
         if ([redCar x_Vel] < 0) {
@@ -113,28 +141,6 @@
 	[mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
 			   toPeers:mPeers
 		  withDataMode:GKSendDataReliable error:nil];
-}
-
-- (void) moveCarOnLine
-{
-    NSLog(@"Position (%f, %f) Width: %f Height: %f", [redCar x_Pos], [redCar y_Pos], self.contentSize.width, self.contentSize.height);
-    
-    if ([[redCar direction]  isEqual: @"Left"]) {
-        [redCar setX_Vel:[redCar x_Vel]+accl];
-        [redCar update];
-    }
-    if ([[redCar direction]  isEqual: @"Right"]) {
-        [redCar setX_Vel:[redCar x_Vel]-accl];
-        [redCar update];
-    }
-}
-
-- (void) draw
-{
-    
-    //[redCar draw];
-    //NSLog(@"In Draw");
-    //ccDrawLine( ccp(200, 200), ccp(300, 300) );
 }
 
 - (void)dealloc
