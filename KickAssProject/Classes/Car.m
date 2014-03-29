@@ -49,6 +49,7 @@
     self.y_Pos = self.y_Pos + self.y_Vel + (float)sin(radian);
     //[self setX_Pos:[self x_Pos]-[self x_Vel]];
     //[self setY_Pos:[self y_Pos]-[self y_Vel]];
+
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
 }
 
