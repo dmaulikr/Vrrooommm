@@ -50,15 +50,15 @@
     
     //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     
-    accl = 0.1;
+    accl = 0.05;
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
-    bimage = [[UIImage alloc] initWithContentsOfFile:@"track1.png"];
+    //bimage = [[UIImage alloc] initWithContentsOfFile:@"track1.png"];
     
     // Create a colored background
-    CCSprite *background = [CCSprite spriteWithImageNamed:@"track1.png"];
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     
     //scale fo the ipod screen
@@ -92,7 +92,7 @@
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
 
-    redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:25*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
+    redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
     [self addChild:redCar];
     
@@ -104,24 +104,32 @@
 
 - (void) update:(CCTime)delta
 {
-    ccColor4B* buffer = malloc(sizeof(ccColor4B));
+    int bufferSize = [redCar car_Height];
+    ccColor4B* buffer = malloc(sizeof(ccColor4B) * bufferSize);
     int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
     float x = redCar.x_Pos / scale_x * dpi;
     float y = winSize.height - redCar.y_Pos / scale_y * dpi;
-    glReadPixels(x + 5, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    ccColor4B color = buffer[0];
-    NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
-    if (/* Is white? */ color.r == 255 && color.g == 255 && color.b == 255) {
-        NSLog(@"Turn NOW");
+    glReadPixels(x + 5, y - (bufferSize / 2), 1, bufferSize, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    ccColor4B lColour = buffer[0];
+    ccColor4B rColour = buffer[bufferSize - 1];
+    if (lColour.r > 0 && lColour.g > 0 && lColour.b > 0) {
+        [redCar turn:-1];
+        NSLog(@"Turn Bitch");
+    }
+    if (rColour.r > 0 && rColour.g > 0 && rColour.b > 0) {
+        [redCar turn:1];
+        NSLog(@"Turn Bitch");
     }
     if (isBeingTouched) {
         [redCar setX_Vel:[redCar x_Vel] + accl];
-        [redCar update];
+        [redCar setY_Vel:[redCar y_Vel] + accl];
     }
     if (!isBeingTouched && [redCar x_Vel] > 0) {
         [redCar setX_Vel:[redCar x_Vel] - accl];
-        [redCar update];
+        [redCar setY_Vel:[redCar y_Vel] - accl];
     }
+    // NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
+    [redCar update];
     NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
     [mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
                toPeers:mPeers

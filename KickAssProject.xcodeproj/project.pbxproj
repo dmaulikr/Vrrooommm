@@ -218,6 +218,7 @@
 		4BA333C018E259D4003DFE20 /* redCar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BA333BF18E259D4003DFE20 /* redCar.png */; };
 		4BB1E4FC18E70E76005A3B8C /* track1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1E4FB18E70E76005A3B8C /* track1.png */; };
 		4BB1E4FE18E7109C005A3B8C /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1E4FD18E7109C005A3B8C /* car.png */; };
+		4BB1E50018E78292005A3B8C /* track2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1E4FF18E78292005A3B8C /* track2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -667,6 +668,7 @@
 		4BA333BF18E259D4003DFE20 /* redCar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCar.png; sourceTree = "<group>"; };
 		4BB1E4FB18E70E76005A3B8C /* track1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track1.png; sourceTree = "<group>"; };
 		4BB1E4FD18E7109C005A3B8C /* car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car.png; sourceTree = "<group>"; };
+		4BB1E4FF18E78292005A3B8C /* track2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -740,6 +742,7 @@
 		4B4D98CF18E0623C00C54757 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BB1E4FF18E78292005A3B8C /* track2.png */,
 				4BB1E4FD18E7109C005A3B8C /* car.png */,
 				4BB1E4FB18E70E76005A3B8C /* track1.png */,
 				4BA333BF18E259D4003DFE20 /* redCar.png */,
@@ -1653,6 +1656,7 @@
 				4B4D98D718E0623C00C54757 /* Default-Landscape~ipad.png in Resources */,
 				4B4D98EC18E0623C00C54757 /* Icon-Small.png in Resources */,
 				4B4D98EA18E0623C00C54757 /* Icon-Small-50.png in Resources */,
+				4BB1E50018E78292005A3B8C /* track2.png in Resources */,
 				4BB1E4FE18E7109C005A3B8C /* car.png in Resources */,
 				4B4D9AD318E0623E00C54757 /* LICENSE_Kazmath.txt in Resources */,
 				4B4D98DE18E0623C00C54757 /* Icon-72.png in Resources */,

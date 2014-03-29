@@ -24,8 +24,7 @@
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *) filename;
 - (void) update;
-- (void) draw;
-- (void) rotateCar;
+- (void) turn:(int)modifer;
 
 
 @end

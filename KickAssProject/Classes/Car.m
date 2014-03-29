@@ -20,7 +20,6 @@
     
     if (self) {
         
-        
         [self setX_Pos:x_Pos];
         [self setY_Pos:y_Pos];
         rot = 0;
@@ -35,8 +34,6 @@
         [self setCar_Height:[carSprite boundingBox].size.height*scaley];
         NSLog(@"I created a Car at (%f, %f) width: %f height: %f", self.x_Pos, self.y_Pos, self.car_Width, self.car_Height);
         
-        
-        
     }
     return self;
 }
@@ -44,13 +41,18 @@
 - (void) update
 {
     float radian;
-    self.angle += 5.0;
-    self.x_Pos = self.x_Pos + self.x_Vel + (float)cos(radian);
-    self.y_Pos = self.y_Pos + self.y_Vel + (float)sin(radian);
-    //[self setX_Pos:[self x_Pos]-[self x_Vel]];
-    //[self setY_Pos:[self y_Pos]-[self y_Vel]];
-
+    radian = self.angle*(M_PI/180);
+    
+    self.x_Pos = self.x_Pos + self.x_Vel*(float)cos(radian);
+    self.y_Pos = self.y_Pos + self.y_Vel*(float)sin(radian);
+    
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
+}
+
+- (void) turn:(int)modifier
+{
+    self.angle += 5 * modifier;
+    carSprite.rotation -= 5 * modifier;
 }
 
 
