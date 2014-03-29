@@ -17,6 +17,7 @@
 @implementation HelloWorldScene
 {
     CCSprite *_sprite;
+    CCButton* networkButton;
     Car *redCar;
     BOOL isMoving;
     float accl;
@@ -40,10 +41,7 @@
     self = [super init];
     if (!self) return(nil);
     
-    //GameKit Network
-    mPicker = [[GKPeerPickerController alloc] init];
-	mPicker.delegate = self;
-	mPeers = [[NSMutableArray alloc] init];
+    //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     
     accl = 0.1;
     
@@ -53,6 +51,15 @@
     // Create a colored background (Dark Grey)
     CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f]];
     [self addChild:background];
+    
+    //GameKit Network
+    mPicker = [[GKPeerPickerController alloc] init];
+	mPicker.delegate = self;
+	mPeers = [[NSMutableArray alloc] init];
+    networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
+    networkButton.positionType = CCPositionTypeNormalized;
+    networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
+    [self addChild:networkButton];
     
     //Create a line (Eventually a track)
     CCDrawNode* node = [[CCDrawNode alloc] init];
@@ -102,11 +109,15 @@
             [redCar update];
         }
     }
+    NSString *positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
+	[mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
+			   toPeers:mPeers
+		  withDataMode:GKSendDataReliable error:nil];
 }
 
 - (void) moveCarOnLine
 {
-    NSLog(@"Position (%f, %f) Width: %f Height: %f ", [redCar x_Pos], [redCar y_Pos], self.contentSize.width, self.contentSize.height);
+    NSLog(@"Position (%f, %f) Width: %f Height: %f", [redCar x_Pos], [redCar y_Pos], self.contentSize.width, self.contentSize.height);
     
     if ([[redCar direction]  isEqual: @"Left"]) {
         [redCar setX_Vel:[redCar x_Vel]+accl];
@@ -207,6 +218,59 @@
                                                   displayName:str
                                                   sessionMode:GKSessionModePeer];
 	return session;
+}
+
+/* Notifies delegate that local app was connected to a remote peer, initiated either side.
+ */
+- (void)peerPickerController:(GKPeerPickerController *)picker
+			  didConnectPeer:(NSString *)peerID
+				   toSession:(GKSession *)session
+{
+	NSLog(@"Connected from %@", peerID);
+	
+	mSession = session;
+	session.delegate = self;
+	[session setDataReceiveHandler:self withContext:nil];
+	[picker dismiss];
+}
+
+- (void)receiveData:(NSData *)data
+		   fromPeer:(NSString *)peer
+		  inSession:(GKSession *)session
+			context:(void *)context
+{
+	NSString *str;
+	str = [[NSString alloc] initWithData:data
+								encoding:NSASCIIStringEncoding];
+	NSLog(@"Received data: %@", str);
+    [networkButton setTitle:str];
+	if ([str hasPrefix:@"\x04\vstreamtype"])
+		str = @"call established";
+}
+
+/* Indicates a state change for the given peer.
+ */
+- (void)session:(GKSession *)session
+		   peer:(NSString *)peerID
+ didChangeState:(GKPeerConnectionState)state
+{
+	switch (state) {
+		case GKPeerStateConnected:
+		{
+            NSString *str = [NSString stringWithFormat:@"Connected from: \"%@\"",
+							 [session displayNameForPeer:peerID]];
+			[networkButton setTitle:str];
+			NSLog(@"%@", str);
+
+			[mPeers addObject:peerID];
+			break;
+		}
+		case GKPeerStateDisconnected:
+		{
+			[mPeers removeObject:peerID];
+			break;
+		}
+	}
 }
 
 // -----------------------------------------------------------------------
