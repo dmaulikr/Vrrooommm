@@ -25,6 +25,7 @@
     float scale_x;
     float scale_y;
     float accl;
+    CGSize winSize;
 }
 
 // -----------------------------------------------------------------------
@@ -57,7 +58,7 @@
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     
     //scale fo the ipod screen
-    
+    winSize = [[CCDirector sharedDirector] viewSizeInPixels];
     scale_x = self.contentSize.width/1024;
     scale_y = self.contentSize.height/768;
     
@@ -90,7 +91,12 @@
 - (void) update:(CCTime)delta
 {
     ccColor4B *buffer = malloc(sizeof(ccColor4B));
-    glReadPixels(redCar.x_Pos, self.contentSize.height - redCar.y_Pos, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    if(winSize.width == 2048){
+        glReadPixels(redCar.x_Pos/scale_x*2, winSize.height - redCar.y_Pos/scale_y*2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    } else {
+        glReadPixels(redCar.x_Pos/scale_x, winSize.height - redCar.y_Pos/scale_y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    }
+    
     ccColor4B color = buffer[0];
     NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
     

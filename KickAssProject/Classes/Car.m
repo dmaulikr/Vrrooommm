@@ -39,12 +39,6 @@
 
 - (void) update
 {
-    if ([self x_Pos] > 900 ) {
-        self.direction = @"Left";
-    }
-    if ([self x_Pos] < 100) {
-        self.direction = @"Right";
-    }
     [self setX_Pos:[self x_Pos]-[self x_Vel]];
     [self setY_Pos:[self y_Pos]-[self y_Vel]];
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
