@@ -12,13 +12,18 @@
 #import "cocos2d-ui.h"
 #import "Track.h"
 #import "Car.h"
+#import <GameKit/GameKit.h>
 
 // -----------------------------------------------------------------------
 
 /**
  *  The main scene
  */
-@interface HelloWorldScene : CCScene
+@interface HelloWorldScene : CCScene{
+    GKPeerPickerController *mPicker;
+    NSMutableArray *mPeers;
+    GKSession *mSession;
+}
 
 // -----------------------------------------------------------------------
 

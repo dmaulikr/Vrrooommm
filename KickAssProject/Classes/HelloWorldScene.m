@@ -40,6 +40,11 @@
     self = [super init];
     if (!self) return(nil);
     
+    //GameKit Network
+    mPicker = [[GKPeerPickerController alloc] init];
+	mPicker.delegate = self;
+	mPeers = [[NSMutableArray alloc] init];
+    
     accl = 0.1;
     
     // Enable touch handling on scene node
@@ -135,6 +140,8 @@
     // always call super onEnter first
     [super onEnter];
     
+    [mPicker show];
+    
     // In pre-v3, touch enable and scheduleUpdate was called here
     // In v3, touch is enabled by setting userInterActionEnabled for the individual nodes
     // Per frame update is automatically enabled, if update is overridden
@@ -179,6 +186,27 @@
     // back to intro scene with transition
     [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
                                withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+}
+
+/* Notifies delegate that the user cancelled the picker.
+ */
+- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker{
+}
+
+/* Notifies delegate that the connection type is requesting a GKSession object.
+ You should return a valid GKSession object for use by the picker.
+ If this method is not implemented or returns 'nil',
+ a default GKSession is created on the delegate's behalf.
+ */
+- (GKSession *)peerPickerController:(GKPeerPickerController *)picker
+		   sessionForConnectionType:(GKPeerPickerConnectionType)type
+{
+	NSString *str = [[UIDevice currentDevice] name];
+	NSLog(@"Preparing session for user %@", str);
+	GKSession *session = [[GKSession alloc] initWithSessionID:@"GameKitTest session"
+                                                  displayName:str
+                                                  sessionMode:GKSessionModePeer];
+	return session;
 }
 
 // -----------------------------------------------------------------------
