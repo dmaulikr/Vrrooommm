@@ -44,7 +44,7 @@
 - (void) update
 {
     float radian;
-    self.angle += 1.0;
+    self.angle += 5.0;
     self.x_Pos = self.x_Pos + self.x_Vel + (float)cos(radian);
     self.y_Pos = self.y_Pos + self.y_Vel + (float)sin(radian);
     //[self setX_Pos:[self x_Pos]-[self x_Vel]];
@@ -52,26 +52,6 @@
 
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
 }
-
-- (void) rotateCar
-{
-    //carSprite.rotation = -10;
-}
-
-- (void) draw
-{
-    CCDrawNode* node = [[CCDrawNode alloc] init];
-    CGPoint vertices[] = { ccp([self x_Pos] + [self car_Width]/2, [self y_Pos] + [self car_Height]/2) ,
-                           ccp([self x_Pos] + [self car_Width]/2, [self y_Pos] - [self car_Height]/2) ,
-                           ccp([self x_Pos] - [self car_Width]/2, [self y_Pos] + [self car_Height]/2) ,
-                           ccp([self x_Pos] - [self car_Width]/2, [self y_Pos] - [self car_Height]/2)};
-    CCColor* red = [CCColor colorWithRed:1 green:0 blue:0];
-    CCColor* white = [CCColor colorWithRed:1 green:1 blue:1];
-    [node drawPolyWithVerts:vertices count:4 fillColor:red borderWidth:1 borderColor:white];
-
-}
-
-
 
 
 @end
