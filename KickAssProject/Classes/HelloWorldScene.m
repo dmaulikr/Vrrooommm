@@ -40,7 +40,7 @@
     self = [super init];
     if (!self) return(nil);
     
-    accl = 0.2;
+    accl = 0.1;
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
@@ -51,8 +51,8 @@
     
     //Create a line (Eventually a track)
     CCDrawNode* node = [[CCDrawNode alloc] init];
-    CCColor* red = [CCColor colorWithRed:1 green:0 blue:0];
-    [node drawSegmentFrom:ccp(200, 200) to:ccp(600, 200) radius:5 color: red];
+    CCColor* red = [CCColor colorWithRed:0 green:0 blue:1];
+    [node drawSegmentFrom:ccp(100, 200) to:ccp(900, 200) radius:5 color: red];
     [self addChild:node];
     
     // Create a back button
@@ -68,8 +68,8 @@
     [self addChild:_sprite];
      */
     
-    redCar = [[Car alloc] initCarWithMass:50 withXPos:100 withYPos:400 file:@"redCar.png"];
-    //Car *car = [Car spriteWithImageNamed:@"redCar.png"];
+    redCar = [[Car alloc] initCarWithMass:50 withXPos:100 withYPos:200 file:@"redCar.png"];
+    [redCar setDirection:@"Right"];
     [self addChild:redCar];
 
     //Track *track = [[Track alloc] initTrack:@"track2.png"];
@@ -85,16 +85,31 @@
 {
     if (isMoving) {
         //accelerate the car
-        [redCar setX_Vel:[redCar x_Vel]-accl];
-        [redCar update];
+        [self moveCarOnLine];
+        //[redCar setX_Vel:[redCar x_Vel]-accl];
+        //[redCar update];
     }
     else
     {
         if ([redCar x_Vel] < 0) {
-            NSLog(@"Slowing Down");
+            //NSLog(@"Slowing Down");
             [redCar setX_Vel:[redCar x_Vel]+accl];
             [redCar update];
         }
+    }
+}
+
+- (void) moveCarOnLine
+{
+    NSLog(@"Position (%f, %f) Width: %f Height: %f ", [redCar x_Pos], [redCar y_Pos], self.contentSize.width, self.contentSize.height);
+    
+    if ([[redCar direction]  isEqual: @"Left"]) {
+        [redCar setX_Vel:[redCar x_Vel]+accl];
+        [redCar update];
+    }
+    if ([[redCar direction]  isEqual: @"Right"]) {
+        [redCar setX_Vel:[redCar x_Vel]-accl];
+        [redCar update];
     }
 }
 

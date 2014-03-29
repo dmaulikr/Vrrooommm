@@ -19,6 +19,7 @@
 @property float y_Vel;
 @property float car_Width;
 @property float car_Height;
+@property NSString* direction;
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos file:(NSString *) filename;
 - (void) update;
