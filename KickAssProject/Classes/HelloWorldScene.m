@@ -78,13 +78,14 @@
     networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
     networkButton.positionType = CCPositionTypeNormalized;
     networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
+    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
+    networkButton.color = black;
     [self addChild:networkButton];
     
     //Create a line (Eventually a track)
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
-    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     backButton.color = black;
     backButton.positionType = CCPositionTypeNormalized;
     backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
