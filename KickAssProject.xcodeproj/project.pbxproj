@@ -215,9 +215,8 @@
 		4B4D9B6618E0623F00C54757 /* IntroScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4D9B6518E0623F00C54757 /* IntroScene.m */; };
 		4B6026A818E22BB70025B57C /* Car.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6026A718E22BB70025B57C /* Car.m */; };
 		4BA333C018E259D4003DFE20 /* redCar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BA333BF18E259D4003DFE20 /* redCar.png */; };
-		4BDC5AB718E1208000157DA3 /* track1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5AB618E1208000157DA3 /* track1.png */; };
-		4BDC5AB918E1212900157DA3 /* track2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5AB818E1212900157DA3 /* track2.png */; };
-		4BDC5ABB18E121AA00157DA3 /* track3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC5ABA18E121AA00157DA3 /* track3.png */; };
+		4BB1E4FC18E70E76005A3B8C /* track1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1E4FB18E70E76005A3B8C /* track1.png */; };
+		4BB1E4FE18E7109C005A3B8C /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1E4FD18E7109C005A3B8C /* car.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -664,9 +663,8 @@
 		4B6026A618E22BB70025B57C /* Car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Car.h; path = Classes/Car.h; sourceTree = "<group>"; };
 		4B6026A718E22BB70025B57C /* Car.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Car.m; path = Classes/Car.m; sourceTree = "<group>"; };
 		4BA333BF18E259D4003DFE20 /* redCar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCar.png; sourceTree = "<group>"; };
-		4BDC5AB618E1208000157DA3 /* track1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track1.png; sourceTree = "<group>"; };
-		4BDC5AB818E1212900157DA3 /* track2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track2.png; sourceTree = "<group>"; };
-		4BDC5ABA18E121AA00157DA3 /* track3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track3.png; sourceTree = "<group>"; };
+		4BB1E4FB18E70E76005A3B8C /* track1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track1.png; sourceTree = "<group>"; };
+		4BB1E4FD18E7109C005A3B8C /* car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -738,10 +736,9 @@
 		4B4D98CF18E0623C00C54757 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BB1E4FD18E7109C005A3B8C /* car.png */,
+				4BB1E4FB18E70E76005A3B8C /* track1.png */,
 				4BA333BF18E259D4003DFE20 /* redCar.png */,
-				4BDC5ABA18E121AA00157DA3 /* track3.png */,
-				4BDC5AB818E1212900157DA3 /* track2.png */,
-				4BDC5AB618E1208000157DA3 /* track1.png */,
 				4B4D98D018E0623C00C54757 /* Default.png */,
 				4B4D98D218E0623C00C54757 /* Default@2x.png */,
 				4B4D98D418E0623C00C54757 /* Default-568h@2x.png */,
@@ -1642,11 +1639,9 @@
 			files = (
 				4B4D98D318E0623C00C54757 /* Default@2x.png in Resources */,
 				4B4D98E618E0623C00C54757 /* Icon-120.png in Resources */,
-				4BDC5AB918E1212900157DA3 /* track2.png in Resources */,
 				4B4D9AEA18E0623E00C54757 /* LICENSE_CCBReader.txt in Resources */,
 				4B4D98DC18E0623C00C54757 /* Icon@2x.png in Resources */,
 				4B4D98EE18E0623C00C54757 /* Icon-Small@2x.png in Resources */,
-				4BDC5ABB18E121AA00157DA3 /* track3.png in Resources */,
 				4B4D98E018E0623C00C54757 /* Icon-72@2x.png in Resources */,
 				4B4D98D118E0623C00C54757 /* Default.png in Resources */,
 				4B4D98DA18E0623C00C54757 /* Icon.png in Resources */,
@@ -1654,16 +1649,17 @@
 				4B4D98D718E0623C00C54757 /* Default-Landscape~ipad.png in Resources */,
 				4B4D98EC18E0623C00C54757 /* Icon-Small.png in Resources */,
 				4B4D98EA18E0623C00C54757 /* Icon-Small-50.png in Resources */,
+				4BB1E4FE18E7109C005A3B8C /* car.png in Resources */,
 				4B4D9AD318E0623E00C54757 /* LICENSE_Kazmath.txt in Resources */,
 				4B4D98DE18E0623C00C54757 /* Icon-72.png in Resources */,
 				4B4D9A2C18E0623E00C54757 /* LICENSE_cocos2d.txt in Resources */,
 				4B4D98D518E0623C00C54757 /* Default-568h@2x.png in Resources */,
 				4B4D98F518E0623C00C54757 /* iTunesArtwork in Resources */,
-				4BDC5AB718E1208000157DA3 /* track1.png in Resources */,
 				4B4D98F018E0623C00C54757 /* Icon-Spotlight-iOS7.png in Resources */,
 				4B4D98E418E0623C00C54757 /* Icon-76@2x.png in Resources */,
 				4BA333C018E259D4003DFE20 /* redCar.png in Resources */,
 				4B4D9B5818E0623F00C54757 /* LICENSE_Chipmunk.txt in Resources */,
+				4BB1E4FC18E70E76005A3B8C /* track1.png in Resources */,
 				4B4D98F218E0623C00C54757 /* Icon-Spotlight-iOS7@2x.png in Resources */,
 				4B4D98E218E0623C00C54757 /* Icon-76.png in Resources */,
 				4B4D9AB818E0623E00C54757 /* ChangeLog in Resources */,

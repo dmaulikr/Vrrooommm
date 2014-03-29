@@ -21,8 +21,9 @@
 @property float car_Height;
 @property NSString* direction;
 
-- (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos file:(NSString *) filename;
+- (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *) filename;
 - (void) update;
 - (void) draw;
+
 
 @end

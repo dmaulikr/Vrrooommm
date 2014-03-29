@@ -15,5 +15,6 @@
 
 - (id) initTrack:(NSString *)filename;
 - (void) getTracks;
+- (UIColor *)colorAtPixel:(CGPoint)point;
 
 @end

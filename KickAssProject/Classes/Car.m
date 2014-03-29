@@ -13,7 +13,7 @@
     CCSprite *carSprite;
 }
 
-- (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos file:(NSString *)filename
+- (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *)filename
 {
     self = [super init];
     
@@ -24,6 +24,8 @@
         [self setY_Pos:y_Pos];
         carSprite = [CCSprite spriteWithImageNamed:filename];
         carSprite.position = ccp(self.x_Pos, self.y_Pos);
+        carSprite.scaleX = scalex;
+        carSprite.scaleY = scaley;
         [self addChild:carSprite];
         NSLog(@"I created a Car at (%f, %f)", self.x_Pos, self.y_Pos);
         [self setMass:mass];
