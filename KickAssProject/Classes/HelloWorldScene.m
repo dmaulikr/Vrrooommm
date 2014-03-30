@@ -56,7 +56,6 @@
     accl_x = 15;
     accl_y = 0;
     
-    []
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
@@ -235,6 +234,16 @@
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
+    NSArray *allTouches = [touches allObjects];
+    
+    for (UITouch *touch in allTouches) {
+        
+        CGPoint touchLoc = [touch locationInNode:self];
+        if (touchLoc.x > self.contentSize.width/2) {
+            isBeingTouched = YES;
+        }
+        NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+    }
     
     
     // Log touch location
@@ -244,7 +253,9 @@
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    for (UITouch *touch in touches) {
+    NSArray *allTouches = [touches allObjects];
+    
+    for (UITouch *touch in allTouches) {
         
         CGPoint touchLoc = [touch locationInNode:self];
         if (touchLoc.x > self.contentSize.width/2) {
