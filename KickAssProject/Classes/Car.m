@@ -43,10 +43,36 @@
     
     self.radian = self.angle*(M_PI/180);
     
+    
     self.x_Pos = self.x_Pos + self.x_Vel*delta*cos(self.radian);
     self.y_Pos = self.y_Pos + self.y_Vel*delta*sin(self.radian);
     
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
+}
+
+- (void) checkCol:(float) width andHeight:(float) height
+{
+    NSLog(@"Height: %f, Width: %f , X_Pos: %f , Y_Pos: %f", height, width, self.x_Pos, self.y_Pos);
+    //To Far Right
+    if (self.x_Pos + self.car_Width/2 > width) {
+        self.x_Pos = width - self.car_Width/2;
+    }
+    
+    //To Far Left
+    if (self.x_Pos - self.car_Width/2 < 0) {
+        self.x_Pos = self.car_Width/2;
+    }
+    
+    //To Far Up
+    if (self.y_Pos + self.car_Height/2 > height) {
+        self.y_Pos = height - self.car_Height/2;
+    }
+    
+    //To Far down
+    if (self.y_Pos - self.car_Height/2 < 0) {
+        self.y_Pos = self.car_Height/2;
+    }
+
 }
 
 - (void) turnRight

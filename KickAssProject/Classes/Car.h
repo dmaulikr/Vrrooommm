@@ -29,5 +29,6 @@
 - (void) turnRight;
 - (void) turnLeft;
 - (void) straight;
+- (void) checkCol:(float) width andHeight:(float) height;
 
 @end
