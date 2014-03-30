@@ -83,16 +83,16 @@
 
 }
 
-- (void) turnRight
+- (void) turnRight:(float) ang
 {
-    self.angle -= 1;
-    carSprite.rotation += 1;
+    self.angle -= ang;
+    carSprite.rotation += ang;
 }
 
-- (void) turnLeft
+- (void) turnLeft:(float) ang
 {
-    self.angle += 1;
-    carSprite.rotation -= 1;
+    self.angle += ang*-1.0;
+    carSprite.rotation -= ang*-1.0;
 }
 
 - (void) straight

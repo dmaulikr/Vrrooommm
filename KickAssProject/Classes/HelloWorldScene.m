@@ -32,7 +32,7 @@
     CGPoint *location;
     
     float diff_from_touch_pos_accl;
-    float diff_x_pos;
+    float diff_from_touch_pos_angle;
     
     float scale_x;
     float scale_y;
@@ -90,8 +90,8 @@
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
-    scale_x = winSize.width/1024;
-    scale_y = winSize.height/768;
+    scale_x = self.contentSize.width/1024;
+    scale_y = self.contentSize.height/768;
     
     background.scaleX = scale_x;
     background.scaleY = scale_y;
@@ -137,11 +137,11 @@
     ccColor4B* centerBuffer = malloc(sizeof(ccColor4B));
     
     int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
-    //float x = redCar.x_Pos / scale_x * dpi;
-    //float y = winSize.height - redCar.y_Pos / scale_y * dpi;
+    float x = redCar.x_Pos / scale_x * dpi;
+    float y = winSize.height - redCar.y_Pos / scale_y * dpi;
     
-    float x = redCar.x_Pos;
-    float y = self.contentSize.height - redCar.y_Pos;
+    //float x = redCar.x_Pos / scale_x;
+    //float y = self.contentSize.height - redCar.y_Pos / scale_y;
     
     
     //NSLog(@"OUTSIDE: Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
@@ -153,7 +153,7 @@
     
     ccColor4B centerColour = centerBuffer[0];
     
-    //NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
+    NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
     
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
@@ -168,11 +168,11 @@
     }
     
     if ( isTurningRight){
-        [redCar turnRight];
+        [redCar turnRight:diff_from_touch_pos_angle];
     }
     
     else if (isTurningLeft) {
-        [redCar turnLeft];
+        [redCar turnLeft:diff_from_touch_pos_angle];
     }
     
     [redCar checkCol:self.contentSize.width andHeight:self.contentSize.height];
@@ -300,12 +300,14 @@
     
     else if (touchLoc.x < self.contentSize.width/2) {
         if (touchLoc.x > touch_x_Pos) {
+            diff_from_touch_pos_angle = (touchLoc.x - touch_x_Pos)/20;
             //NSLog(@"Slide Right");
             isTurningRight = YES;
             isTurningLeft = NO;
         }
         else
         {
+            diff_from_touch_pos_angle = (touchLoc.x - touch_x_Pos)/20;
             //NSLog(@"Slide Left");
             isTurningRight = NO;
             isTurningLeft = YES;
