@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3FEF42B118E754FA0086EF82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FEF42B018E754FA0086EF82 /* GameKit.framework */; };
-		4B1A529918E07492003D6142 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1A529818E07492003D6142 /* Track.m */; };
 		4B4D98B718E0623C00C54757 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B618E0623C00C54757 /* QuartzCore.framework */; };
 		4B4D98B918E0623C00C54757 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B818E0623C00C54757 /* OpenGLES.framework */; };
 		4B4D98BB18E0623C00C54757 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98BA18E0623C00C54757 /* OpenAL.framework */; };
@@ -233,8 +232,6 @@
 
 /* Begin PBXFileReference section */
 		3FEF42B018E754FA0086EF82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		4B1A529718E07492003D6142 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = Classes/Track.h; sourceTree = "<group>"; };
-		4B1A529818E07492003D6142 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Track.m; path = Classes/Track.m; sourceTree = "<group>"; };
 		4B4D98B318E0623C00C54757 /* KickAssProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickAssProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B4D98B618E0623C00C54757 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4B4D98B818E0623C00C54757 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1568,8 +1565,6 @@
 				4B4D9B6218E0623F00C54757 /* HelloWorldScene.m */,
 				4B4D9B6418E0623F00C54757 /* IntroScene.h */,
 				4B4D9B6518E0623F00C54757 /* IntroScene.m */,
-				4B1A529718E07492003D6142 /* Track.h */,
-				4B1A529818E07492003D6142 /* Track.m */,
 				4B6026A618E22BB70025B57C /* Car.h */,
 				4B6026A718E22BB70025B57C /* Car.m */,
 			);
@@ -1792,7 +1787,6 @@
 				4B4D997B18E0623D00C54757 /* CCPhysicsNode.m in Sources */,
 				4B4D9A6118E0623E00C54757 /* ALSoundSourcePool.m in Sources */,
 				4B4D997018E0623D00C54757 /* CCParticleSystemBase.m in Sources */,
-				4B1A529918E07492003D6142 /* Track.m in Sources */,
 				4B4D9A0718E0623D00C54757 /* CCColor.m in Sources */,
 				4B4D9A5418E0623E00C54757 /* ALChannelSource.m in Sources */,
 				4B4D990018E0623C00C54757 /* CCActionCatmullRom.m in Sources */,

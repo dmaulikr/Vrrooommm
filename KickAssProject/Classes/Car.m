@@ -52,7 +52,7 @@
 
 - (void) checkCol:(float) width andHeight:(float) height
 {
-    NSLog(@"Height: %f, Width: %f , X_Pos: %f , Y_Pos: %f", height, width, self.x_Pos, self.y_Pos);
+    //NSLog(@"Height: %f, Width: %f , X_Pos: %f , Y_Pos: %f", height, width, self.x_Pos, self.y_Pos);
     //To Far Right
     if (self.x_Pos + self.car_Width/2 > width) {
         self.x_Pos = width - self.car_Width/2;
@@ -77,14 +77,14 @@
 
 - (void) turnRight
 {
-    self.angle -= 3;
-    carSprite.rotation += 3;
+    self.angle -= 1;
+    carSprite.rotation += 1;
 }
 
 - (void) turnLeft
 {
-    self.angle += 3;
-    carSprite.rotation -= 3;
+    self.angle += 1;
+    carSprite.rotation -= 1;
 }
 
 - (void) straight

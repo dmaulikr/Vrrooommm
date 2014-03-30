@@ -28,7 +28,6 @@
     float touch_x_Pos;
     BOOL isTurningLeft;
     BOOL isTurningRight;
-    Track *track;
     UIImage *bimage;
     CGPoint *location;
     
@@ -150,7 +149,7 @@
     
     glReadPixels(x, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
     
-    ccColor4B centerColour = centerBuffer[0];
+    //ccColor4B centerColour = centerBuffer[0];
     
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
@@ -273,13 +272,15 @@
         
     //right Side of screen
     if (touchLoc.x > self.contentSize.width/2) {
+        isBrakeBeingTouched = NO;
+        isAcclBeingTouched = NO;
         isRightSideBeingTouched = NO;
     }
     
-    if (touchLoc.x < self.contentSize.width/2) {
-        isLeftSideBeingTouched = NO;
+    else {
         isTurningLeft = NO;
         isTurningRight = NO;
+        isLeftSideBeingTouched = NO;
     }
 
     //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
@@ -288,13 +289,19 @@
 
 - (void) touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint touchLoc = [touch locationInNode:self];
+    
     
     //NSLog(@"Initail Y touch: %f and touch Pos y: %f " , touch_y_Pos, touchLoc.y);
     
-    if (isRightSideBeingTouched) {
+    NSSet *allTouches = [event allTouches];
+    
+    for (UITouch *touch in allTouches) {
+        
+        CGPoint touchLoc = [touch locationInNode:self];
+    
+    if (touchLoc.x > self.contentSize.width/2) {
         if (touchLoc.y > touch_y_Pos) {
-            diff_from_touch_pos_accl = (touchLoc.y - touch_y_Pos)/10;
+            diff_from_touch_pos_accl = (touchLoc.y - touch_y_Pos)/5;
             //NSLog(@"SLide up");
             isBrakeBeingTouched = NO;
             isAcclBeingTouched = YES;
@@ -302,13 +309,13 @@
         else
         {
             //NSLog(@"Slide Down");
-            diff_from_touch_pos_accl = (touchLoc.y - touch_y_Pos)/10;
+            diff_from_touch_pos_accl = (touchLoc.y - touch_y_Pos)/5;
             isAcclBeingTouched = NO;
             isBrakeBeingTouched = YES;
         }
     }
     
-    if (isLeftSideBeingTouched) {
+    else if (touchLoc.x < self.contentSize.width/2) {
         if (touchLoc.x > touch_x_Pos) {
             //NSLog(@"Slide Right");
             isTurningRight = YES;
@@ -322,10 +329,9 @@
         }
     }
         
+    }
     
     //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
-    
-    
     
 }
 
