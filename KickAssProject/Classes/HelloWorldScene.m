@@ -122,12 +122,12 @@
     float x = redCar.x_Pos / scale_x * dpi;
     float y = winSize.height - redCar.y_Pos / scale_y * dpi;
     
-    //NSLog(@"Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
+    //NSLog(@"OUTSIDE: Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
     //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
     //NSLog(@"Angle: %f", [redCar angle]);
     
     //Set the car based on its starting position on the track
-    [redCar setDirection:trackDirections[index]];
+    //[redCar setDirection:trackDirections[index]];
     
     //Car is facing Right
     if ([[redCar direction] isEqual:@"Right" ]) {
@@ -161,9 +161,13 @@
     
     if ([[redCar direction] isEqual:@"LeftTurn"]) {
         //NSLog(@"Left Turn senseoter crap");
+        NSLog(@"Radian: %f", [redCar radian] );
+        NSLog(@"Position: (%f, %f) ", x , y);
+        NSLog(@"INSIDE Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
+        
         glReadPixels(x + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]) , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x + [redCar car_Width]/2 + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x - [redCar car_Width]/2 + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+        glReadPixels(x + ([redCar car_Width]/2)*cos([redCar radian]), y + ([redCar car_Height]/2)*sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x - ([redCar car_Width]/2)*cos([redCar radian]), y + ([redCar car_Height]/2)*sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
     }
     
     ccColor4B leftColour = leftBuffer[0];
@@ -174,15 +178,14 @@
     // RIGHT sensor sees White
     if(rightColour.r > 0 && rightColour.g > 0 && rightColour.b > 0)
     {
-        
-        accl_y = 5;
+        accl_y = 15;
         [redCar turnLeft];
-        NSLog(@"Angle after left turn: %f",[redCar angle]);
+        //NSLog(@"Angle after left turn: %f",[redCar angle]);
     }
     // CENTER sensor sees White
     if(centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0)
     {
-        [redCar turnLeft];
+        //[redCar turnLeft];
     }
     //LEFT sensor sees White
     if(leftColour.r > 0 && leftColour.g > 0 && centerColour.b > 0)

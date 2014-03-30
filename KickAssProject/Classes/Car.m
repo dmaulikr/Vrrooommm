@@ -28,7 +28,7 @@
         carSprite.scaleX = scalex;
         carSprite.scaleY = scaley;
         [self addChild:carSprite];
-        //self.direction = @"Right";
+        self.direction = @"Right";
         [self setMass:mass];
         [self setCar_Width:[carSprite boundingBox].size.width*scalex];
         [self setCar_Height:[carSprite boundingBox].size.height*scaley];
@@ -84,8 +84,8 @@
 
 - (void) turnLeft
 {
-    self.angle -= 10;
-    carSprite.rotation += 10;
+    self.angle += 5*(self.x_Vel*self.y_Vel)/1000;
+    carSprite.rotation -= 5*(self.x_Vel*self.y_Vel)/1000;
 }
 
 - (void) straight
