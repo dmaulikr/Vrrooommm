@@ -51,14 +51,14 @@
 
 - (void) turnRight
 {
-    self.angle += 10;
-    carSprite.rotation -= 10;
+    self.angle += 5;
+    carSprite.rotation += 5;
 }
 
 - (void) turnLeft
 {
-    self.angle += 5*(self.x_Vel*self.y_Vel)/1000;
-    carSprite.rotation -= 5*(self.x_Vel*self.y_Vel)/1000;
+    self.angle -= 5;
+    carSprite.rotation -= 5;
 }
 
 - (void) straight

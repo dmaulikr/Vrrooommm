@@ -19,7 +19,9 @@
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
-    BOOL isBeingTouched;
+    BOOL isRightBeingTouched;
+    BOOL isTurningLeft;
+    BOOL isTurningRight;
     Track *track;
     UIImage *bimage;
     CGPoint *location;
@@ -48,13 +50,19 @@
 {
     // Apple recommend assigning self with supers return value
     
+    
     self = [super init];
     if (!self) return(nil);
     
     //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
+    [self setUserInteractionEnabled:YES];
+    [self setMultipleTouchEnabled:YES];
+    
+    NSLog(@"Is being enabled: %i ",[self isMultipleTouchEnabled]);
+    
     
     accl_x = 15;
-    accl_y = 0;
+    accl_y = 15;
     
     
     // Enable touch handling on scene node
@@ -101,6 +109,9 @@
     backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
+    backButton.exclusiveTouch = NO;
+    
+    
     
 
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
@@ -131,64 +142,24 @@
     
     ccColor4B centerColour = centerBuffer[0];
     
-    if (isBeingTouched) {
+    if (isRightBeingTouched) {
         [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
         [redCar setY_Vel:[redCar y_Vel] + accl_y*delta];
     }
     
-    /*
-    if (centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0) {
+    else if (!isRightBeingTouched && [redCar x_Vel] > 0) {
         [redCar setX_Vel:[redCar x_Vel] - accl_x*delta];
         [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
-    }*/
-    
-    /*
-    //if left sensor is white
-    if (lColour.r > 0 && lColour.g > 0 && lColour.b > 0) {
-        while(!redFound && turn < bufferSize / 2){
-            turn++;
-            ccColor4B rColour = buffer[turn - 1];
-            if(lColour.r > 0 && lColour.g > 0 && lColour.b > 0){
-                redFound = true;
-            }
-        }
-        [redCar turn:-turn];
-        //NSLog(@"Turn");
     }
     
-    
-    if (rColour.r > 0 && rColour.g > 0 && rColour.b > 0) {
-        while(!redFound && turn < bufferSize / 2){
-            turn++;
-            ccColor4B rColour = buffer[bufferSize - turn];
-            if(rColour.r > 0 && rColour.g > 0 && rColour.b > 0){
-                redFound = true;
-            }
-        }
-        [redCar turn:turn];
-        
-        //NSLog(@"Turn");
+    if ( isTurningRight){
+        [redCar turnRight];
     }
     
-    if (isBeingTouched) {
-        [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
-        [redCar setY_Vel:[redCar y_Vel] + accl_y*delta];
+    else if (isTurningLeft) {
+        [redCar turnLeft];
     }
     
-    if (!isBeingTouched && [redCar x_Vel] > 0) {
-        if ([redCar x_Vel] < 0 && [redCar y_Vel] < 0) {
-            [redCar setX_Vel:0];
-            [redCar setY_Vel:0];
-        }
-        else
-        {
-            [redCar setX_Vel:[redCar x_Vel] - accl_x*delta];
-            [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
-        }
-        
-    }*/
-    
-    // NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
     
     [redCar update:delta];
     NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
@@ -232,15 +203,29 @@
 #pragma mark - Touch Handler
 // -----------------------------------------------------------------------
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+
+-(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
-    NSArray *allTouches = [touches allObjects];
+    NSSet *allTouches = [event allTouches];
+    NSLog(@"fuck");
     
     for (UITouch *touch in allTouches) {
         
         CGPoint touchLoc = [touch locationInNode:self];
         if (touchLoc.x > self.contentSize.width/2) {
-            isBeingTouched = YES;
+            isRightBeingTouched = YES;
+        }
+        
+        //Left Side of screen
+        if (touchLoc.x < self.contentSize.width/2) {
+            if (touchLoc.x < self.contentSize.width/4) {
+                isTurningLeft = YES;
+            }
+            else {
+                isTurningRight = YES;
+            }
+            
         }
         NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     }
@@ -251,15 +236,24 @@
     
 }
 
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void) touchEnded:(UITouch *) touch withEvent:(UIEvent *)event{
     
-    NSArray *allTouches = [touches allObjects];
+    NSSet *allTouches = [event allTouches];
+   
     
     for (UITouch *touch in allTouches) {
         
         CGPoint touchLoc = [touch locationInNode:self];
+        
+        //right Side of screen
         if (touchLoc.x > self.contentSize.width/2) {
-            isBeingTouched = NO;
+            isRightBeingTouched = NO;
+        }
+        
+        //Left Side of screen
+        if (touchLoc.x < self.contentSize.width/2) {
+            isTurningLeft = NO;
+            isTurningRight = NO;
         }
         NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     }
