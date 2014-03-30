@@ -19,7 +19,8 @@
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
-    BOOL isRightBeingTouched;
+    BOOL isAcclBeingTouched;
+    BOOL isBrakeBeingTouched;
     BOOL isTurningLeft;
     BOOL isTurningRight;
     Track *track;
@@ -142,14 +143,14 @@
     
     ccColor4B centerColour = centerBuffer[0];
     
-    if (isRightBeingTouched) {
+    if (isAcclBeingTouched) {
         [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
         [redCar setY_Vel:[redCar y_Vel] + accl_y*delta];
     }
     
-    else if (!isRightBeingTouched && [redCar x_Vel] > 0) {
-        [redCar setX_Vel:[redCar x_Vel] - accl_x*delta];
-        [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
+    else if (isBrakeBeingTouched) {
+        [redCar setX_Vel:[redCar x_Vel] - 50*delta];
+        [redCar setY_Vel:[redCar y_Vel] - 50*delta];
     }
     
     if ( isTurningRight){
@@ -208,14 +209,19 @@
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
     NSSet *allTouches = [event allTouches];
-    NSLog(@"fuck");
     
     for (UITouch *touch in allTouches) {
         
         CGPoint touchLoc = [touch locationInNode:self];
-        if (touchLoc.x > self.contentSize.width/2) {
-            isRightBeingTouched = YES;
+        
+        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y < self.contentSize.height/2) {
+            isAcclBeingTouched = YES;
         }
+        
+        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y > self.contentSize.height/2) {
+            isBrakeBeingTouched = YES;
+        }
+        
         
         //Left Side of screen
         if (touchLoc.x < self.contentSize.width/2) {
@@ -227,7 +233,7 @@
             }
             
         }
-        NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+        //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     }
     
     
@@ -238,25 +244,26 @@
 
 - (void) touchEnded:(UITouch *) touch withEvent:(UIEvent *)event{
     
-    NSSet *allTouches = [event allTouches];
+    //NSSet *allTouches = [event allTouches];
    
-    
-    for (UITouch *touch in allTouches) {
+    CGPoint touchLoc = [touch locationInNode:self];
         
-        CGPoint touchLoc = [touch locationInNode:self];
+    //right Side of screen
         
-        //right Side of screen
-        if (touchLoc.x > self.contentSize.width/2) {
-            isRightBeingTouched = NO;
-        }
-        
-        //Left Side of screen
-        if (touchLoc.x < self.contentSize.width/2) {
-            isTurningLeft = NO;
-            isTurningRight = NO;
-        }
-        NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+    if (touchLoc.x > self.contentSize.width/2 && touchLoc.y < self.contentSize.height/2) {
+        isAcclBeingTouched = NO;
     }
+    
+    if (touchLoc.x > self.contentSize.width/2 && touchLoc.y > self.contentSize.height/2) {
+        isBrakeBeingTouched = NO;
+    }
+    //Left Side of screen
+    else {
+        isTurningLeft = NO;
+        isTurningRight = NO;
+    }
+    //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+    
 
 
 }

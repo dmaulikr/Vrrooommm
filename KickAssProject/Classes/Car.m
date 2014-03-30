@@ -43,22 +43,22 @@
     
     self.radian = self.angle*(M_PI/180);
     
-    self.x_Pos = self.x_Pos + self.x_Vel*delta;
-    self.y_Pos = self.y_Pos + self.y_Vel*delta;
+    self.x_Pos = self.x_Pos + self.x_Vel*delta*cos(self.radian);
+    self.y_Pos = self.y_Pos + self.y_Vel*delta*sin(self.radian);
     
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
 }
 
 - (void) turnRight
 {
-    self.angle += 5;
-    carSprite.rotation += 5;
+    self.angle -= 3;
+    carSprite.rotation += 3;
 }
 
 - (void) turnLeft
 {
-    self.angle -= 5;
-    carSprite.rotation -= 5;
+    self.angle += 3;
+    carSprite.rotation -= 3;
 }
 
 - (void) straight
