@@ -28,7 +28,9 @@
     float angle;
     float accl_x;
     float accl_y;
+    NSArray *trackDirections;
     CGSize winSize;
+    int index;
 }
 
 // -----------------------------------------------------------------------
@@ -62,6 +64,11 @@
     // Create a colored background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    
+    //Track directions
+    //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};
+    trackDirections = @[@"Right", @"LeftTurn", @"Up", @"LeftTurn", @"Left", @"LeftTurn", @"Down", @"LeftTurn"];
+    index = 0;
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
@@ -115,9 +122,12 @@
     float x = redCar.x_Pos / scale_x * dpi;
     float y = winSize.height - redCar.y_Pos / scale_y * dpi;
     
-    NSLog(@"Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
+    //NSLog(@"Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
     //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
     //NSLog(@"Angle: %f", [redCar angle]);
+    
+    //Set the car based on its starting position on the track
+    [redCar setDirection:trackDirections[index]];
     
     //Car is facing Right
     if ([[redCar direction] isEqual:@"Right" ]) {
@@ -160,30 +170,25 @@
     ccColor4B rightColour = rightBuffer[0];
     ccColor4B centerColour = centerBuffer[0];
     
-    //int turn = 0;
-    //BOOL redFound = false;
-    
-    //NSLog(@"Angle: %f", [redCar angle] );
-    
     
     // RIGHT sensor sees White
     if(rightColour.r > 0 && rightColour.g > 0 && rightColour.b > 0)
     {
+        
         accl_y = 5;
         [redCar turnLeft];
-        NSLog(@"Right Sensor");
-        
+        NSLog(@"Angle after left turn: %f",[redCar angle]);
     }
     // CENTER sensor sees White
     if(centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0)
     {
-        [redCar straight];
+        [redCar turnLeft];
     }
     //LEFT sensor sees White
     if(leftColour.r > 0 && leftColour.g > 0 && centerColour.b > 0)
     {
         [redCar turnRight];
-        accl_y =5;
+        accl_y = 5;
     }
     
     /*

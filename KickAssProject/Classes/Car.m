@@ -28,7 +28,7 @@
         carSprite.scaleX = scalex;
         carSprite.scaleY = scaley;
         [self addChild:carSprite];
-        self.direction = @"Right";
+        //self.direction = @"Right";
         [self setMass:mass];
         [self setCar_Width:[carSprite boundingBox].size.width*scalex];
         [self setCar_Height:[carSprite boundingBox].size.height*scaley];
@@ -66,7 +66,7 @@
     }
     
     if (self.x_Vel > 0 && self.y_Vel > 0) {
-        NSLog(@"I am turning Bitch");
+        //NSLog(@"I am turning Bitch");
         self.direction = @"LeftTurn";
     }
     
