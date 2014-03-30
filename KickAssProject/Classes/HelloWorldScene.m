@@ -90,8 +90,8 @@
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
-    scale_x = self.contentSize.width/1024;
-    scale_y = self.contentSize.height/768;
+    scale_x = winSize.width/1024;
+    scale_y = winSize.height/768;
     
     background.scaleX = scale_x;
     background.scaleY = scale_y;
@@ -108,8 +108,6 @@
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     networkButton.color = black;
     [self addChild:networkButton];
-    
-    //Create a line (Eventually a track)
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
@@ -139,8 +137,12 @@
     ccColor4B* centerBuffer = malloc(sizeof(ccColor4B));
     
     int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
-    float x = redCar.x_Pos / scale_x * dpi;
-    float y = winSize.height - redCar.y_Pos / scale_y * dpi;
+    //float x = redCar.x_Pos / scale_x * dpi;
+    //float y = winSize.height - redCar.y_Pos / scale_y * dpi;
+    
+    float x = redCar.x_Pos;
+    float y = self.contentSize.height - redCar.y_Pos;
+    
     
     //NSLog(@"OUTSIDE: Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
     //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
@@ -149,7 +151,9 @@
     
     glReadPixels(x, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
     
-    //ccColor4B centerColour = centerBuffer[0];
+    ccColor4B centerColour = centerBuffer[0];
+    
+    //NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
     
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
@@ -234,27 +238,6 @@
             touch_x_Pos = touchLoc.x;
         }
         
-        /*
-        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y < self.contentSize.height/2) {
-            isAcclBeingTouched = YES;
-        }
-        
-        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y > self.contentSize.height/2) {
-            isBrakeBeingTouched = YES;
-        }*/
-        
-        
-        //Left Side of screen
-        /*
-        if (touchLoc.x < self.contentSize.width/2) {
-            if (touchLoc.x < self.contentSize.width/4) {
-                isTurningLeft = YES;
-            }
-            else {
-                isTurningRight = YES;
-            }
-            
-        }*/
         //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     }
     
