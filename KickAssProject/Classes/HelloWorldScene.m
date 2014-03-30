@@ -56,6 +56,8 @@
     accl_x = 15;
     accl_y = 0;
     
+    []
+    
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
@@ -67,8 +69,8 @@
     
     //Track directions
     //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};
-    trackDirections = @[@"Right", @"LeftTurn", @"Up", @"LeftTurn", @"Left", @"LeftTurn", @"Down", @"LeftTurn"];
-    index = 0;
+    //trackDirections = @[@"Right", @"LeftTurn", @"Up", @"LeftTurn", @"Left", @"LeftTurn", @"Down", @"LeftTurn"];
+    //index = 0;
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
@@ -100,6 +102,7 @@
     backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
+    
 
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
@@ -115,8 +118,6 @@
 {
     
     ccColor4B* centerBuffer = malloc(sizeof(ccColor4B));
-    ccColor4B* rightBuffer = malloc(sizeof(ccColor4B));
-    ccColor4B* leftBuffer = malloc(sizeof(ccColor4B));
     
     int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
     float x = redCar.x_Pos / scale_x * dpi;
@@ -126,73 +127,21 @@
     //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
     //NSLog(@"Angle: %f", [redCar angle]);
     
-    //Set the car based on its starting position on the track
-    //[redCar setDirection:trackDirections[index]];
     
-    //Car is facing Right
-    if ([[redCar direction] isEqual:@"Right" ]) {
-        //NSLog(@"Case right");
-        glReadPixels(x + [redCar car_Width]/2, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x + [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x + [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
-    }
+    glReadPixels(x, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
     
-    //Car is facing Left
-    if ([[redCar direction] isEqual:@"Left" ]) {
-        glReadPixels(x - [redCar car_Width]/2, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x - [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x - [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
-    }
-    
-    //Car is facing Up
-    if ([[redCar direction] isEqual:@"Up" ]) {
-        NSLog(@"############Case Up################");
-        glReadPixels(x, y + [redCar car_Height]/2 , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x + [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x - [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
-    }
-    
-    //Car is facing Down
-    if ([[redCar direction] isEqual:@"Down" ]) {
-        glReadPixels(x, y - [redCar car_Height]/2 , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x - [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x + [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
-    }
-    
-    if ([[redCar direction] isEqual:@"LeftTurn"]) {
-        //NSLog(@"Left Turn senseoter crap");
-        NSLog(@"Radian: %f", [redCar radian] );
-        NSLog(@"Position: (%f, %f) ", x , y);
-        NSLog(@"INSIDE Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
-        
-        glReadPixels(x + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]) , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-        glReadPixels(x + ([redCar car_Width]/2)*cos([redCar radian]), y + ([redCar car_Height]/2)*sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
-        glReadPixels(x - ([redCar car_Width]/2)*cos([redCar radian]), y + ([redCar car_Height]/2)*sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
-    }
-    
-    ccColor4B leftColour = leftBuffer[0];
-    ccColor4B rightColour = rightBuffer[0];
     ccColor4B centerColour = centerBuffer[0];
     
+    if (isBeingTouched) {
+        [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
+        [redCar setY_Vel:[redCar y_Vel] + accl_y*delta];
+    }
     
-    // RIGHT sensor sees White
-    if(rightColour.r > 0 && rightColour.g > 0 && rightColour.b > 0)
-    {
-        accl_y = 15;
-        [redCar turnLeft];
-        //NSLog(@"Angle after left turn: %f",[redCar angle]);
-    }
-    // CENTER sensor sees White
-    if(centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0)
-    {
-        //[redCar turnLeft];
-    }
-    //LEFT sensor sees White
-    if(leftColour.r > 0 && leftColour.g > 0 && centerColour.b > 0)
-    {
-        [redCar turnRight];
-        accl_y = 5;
-    }
+    /*
+    if (centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0) {
+        [redCar setX_Vel:[redCar x_Vel] - accl_x*delta];
+        [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
+    }*/
     
     /*
     //if left sensor is white
@@ -220,7 +169,7 @@
         [redCar turn:turn];
         
         //NSLog(@"Turn");
-    }*/
+    }
     
     if (isBeingTouched) {
         [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
@@ -238,9 +187,10 @@
             [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
         }
         
-    }
+    }*/
     
     // NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
+    
     [redCar update:delta];
     NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
     [mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
@@ -283,20 +233,27 @@
 #pragma mark - Touch Handler
 // -----------------------------------------------------------------------
 
--(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    isBeingTouched = YES;
-    CGPoint touchLoc = [touch locationInNode:self];
-    //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    
+    
     // Log touch location
     //CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
     
-    // Move our sprite to touch location
-    CCActionMoveTo *actionMove = [CCActionMoveTo actionWithDuration:1.0f position:touchLoc];
-    [_sprite runAction:actionMove];
 }
 
-- (void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event{
-    isBeingTouched = NO;
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    
+    for (UITouch *touch in touches) {
+        
+        CGPoint touchLoc = [touch locationInNode:self];
+        if (touchLoc.x > self.contentSize.width/2) {
+            isBeingTouched = NO;
+        }
+        NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
+    }
+
+
 }
 
 
