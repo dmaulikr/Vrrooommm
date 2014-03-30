@@ -26,7 +26,8 @@
     float scale_x;
     float scale_y;
     float angle;
-    float accl;
+    float accl_x;
+    float accl_y;
     CGSize winSize;
 }
 
@@ -50,7 +51,8 @@
     
     //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     
-    accl = 0.05;
+    accl_x = 15;
+    accl_y = 0;
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
@@ -104,32 +106,134 @@
 
 - (void) update:(CCTime)delta
 {
-    int bufferSize = [redCar car_Height];
-    ccColor4B* buffer = malloc(sizeof(ccColor4B) * bufferSize);
+    
+    ccColor4B* centerBuffer = malloc(sizeof(ccColor4B));
+    ccColor4B* rightBuffer = malloc(sizeof(ccColor4B));
+    ccColor4B* leftBuffer = malloc(sizeof(ccColor4B));
+    
     int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
     float x = redCar.x_Pos / scale_x * dpi;
     float y = winSize.height - redCar.y_Pos / scale_y * dpi;
-    glReadPixels(x + 5, y - (bufferSize / 2), 1, bufferSize, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    ccColor4B lColour = buffer[0];
-    ccColor4B rColour = buffer[bufferSize - 1];
+    
+    NSLog(@"Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
+    //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
+    //NSLog(@"Angle: %f", [redCar angle]);
+    
+    //Car is facing Right
+    if ([[redCar direction] isEqual:@"Right" ]) {
+        //NSLog(@"Case right");
+        glReadPixels(x + [redCar car_Width]/2, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
+        glReadPixels(x + [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x + [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+    }
+    
+    //Car is facing Left
+    if ([[redCar direction] isEqual:@"Left" ]) {
+        glReadPixels(x - [redCar car_Width]/2, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
+        glReadPixels(x - [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x - [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+    }
+    
+    //Car is facing Up
+    if ([[redCar direction] isEqual:@"Up" ]) {
+        NSLog(@"############Case Up################");
+        glReadPixels(x, y + [redCar car_Height]/2 , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
+        glReadPixels(x + [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x - [redCar car_Width]/2, y + [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+    }
+    
+    //Car is facing Down
+    if ([[redCar direction] isEqual:@"Down" ]) {
+        glReadPixels(x, y - [redCar car_Height]/2 , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
+        glReadPixels(x - [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x + [redCar car_Width]/2, y - [redCar car_Height]/2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+    }
+    
+    if ([[redCar direction] isEqual:@"LeftTurn"]) {
+        //NSLog(@"Left Turn senseoter crap");
+        glReadPixels(x + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]) , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
+        glReadPixels(x + [redCar car_Width]/2 + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rightBuffer);
+        glReadPixels(x - [redCar car_Width]/2 + cos([redCar radian]), y + [redCar car_Height]/2 + sin([redCar radian]), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, leftBuffer);
+    }
+    
+    ccColor4B leftColour = leftBuffer[0];
+    ccColor4B rightColour = rightBuffer[0];
+    ccColor4B centerColour = centerBuffer[0];
+    
+    //int turn = 0;
+    //BOOL redFound = false;
+    
+    //NSLog(@"Angle: %f", [redCar angle] );
+    
+    
+    // RIGHT sensor sees White
+    if(rightColour.r > 0 && rightColour.g > 0 && rightColour.b > 0)
+    {
+        accl_y = 5;
+        [redCar turnLeft];
+        NSLog(@"Right Sensor");
+        
+    }
+    // CENTER sensor sees White
+    if(centerColour.r > 0 && centerColour.g > 0 && centerColour.b > 0)
+    {
+        [redCar straight];
+    }
+    //LEFT sensor sees White
+    if(leftColour.r > 0 && leftColour.g > 0 && centerColour.b > 0)
+    {
+        [redCar turnRight];
+        accl_y =5;
+    }
+    
+    /*
+    //if left sensor is white
     if (lColour.r > 0 && lColour.g > 0 && lColour.b > 0) {
-        [redCar turn:-1];
-        NSLog(@"Turn Bitch");
+        while(!redFound && turn < bufferSize / 2){
+            turn++;
+            ccColor4B rColour = buffer[turn - 1];
+            if(lColour.r > 0 && lColour.g > 0 && lColour.b > 0){
+                redFound = true;
+            }
+        }
+        [redCar turn:-turn];
+        //NSLog(@"Turn");
     }
+    
+    
     if (rColour.r > 0 && rColour.g > 0 && rColour.b > 0) {
-        [redCar turn:1];
-        NSLog(@"Turn Bitch");
-    }
+        while(!redFound && turn < bufferSize / 2){
+            turn++;
+            ccColor4B rColour = buffer[bufferSize - turn];
+            if(rColour.r > 0 && rColour.g > 0 && rColour.b > 0){
+                redFound = true;
+            }
+        }
+        [redCar turn:turn];
+        
+        //NSLog(@"Turn");
+    }*/
+    
     if (isBeingTouched) {
-        [redCar setX_Vel:[redCar x_Vel] + accl];
-        [redCar setY_Vel:[redCar y_Vel] + accl];
+        [redCar setX_Vel:[redCar x_Vel] + accl_x*delta];
+        [redCar setY_Vel:[redCar y_Vel] + accl_y*delta];
     }
+    
     if (!isBeingTouched && [redCar x_Vel] > 0) {
-        [redCar setX_Vel:[redCar x_Vel] - accl];
-        [redCar setY_Vel:[redCar y_Vel] - accl];
+        if ([redCar x_Vel] < 0 && [redCar y_Vel] < 0) {
+            [redCar setX_Vel:0];
+            [redCar setY_Vel:0];
+        }
+        else
+        {
+            [redCar setX_Vel:[redCar x_Vel] - accl_x*delta];
+            [redCar setY_Vel:[redCar y_Vel] - accl_y*delta];
+        }
+        
     }
+    
     // NSLog(@"Color at (%f, %f) with height %f unscaled (%f, %f) is R: %i , G: %i, B: %i", redCar.x_Pos, redCar.y_Pos, self.contentSize.height, redCar.x_Pos/scale_x, redCar.y_Pos/scale_y, color.r, color.g, color.b);
-    [redCar update];
+    [redCar update:delta];
     NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
     [mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
                toPeers:mPeers

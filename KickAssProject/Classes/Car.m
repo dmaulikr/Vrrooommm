@@ -28,7 +28,7 @@
         carSprite.scaleX = scalex;
         carSprite.scaleY = scaley;
         [self addChild:carSprite];
-        
+        self.direction = @"Right";
         [self setMass:mass];
         [self setCar_Width:[carSprite boundingBox].size.width*scalex];
         [self setCar_Height:[carSprite boundingBox].size.height*scaley];
@@ -38,21 +38,60 @@
     return self;
 }
 
-- (void) update
+- (void) update:(CCTime) delta
 {
-    float radian;
-    radian = self.angle*(M_PI/180);
     
-    self.x_Pos = self.x_Pos + self.x_Vel*(float)cos(radian);
-    self.y_Pos = self.y_Pos + self.y_Vel*(float)sin(radian);
+    self.radian = self.angle*(M_PI/180);
+    
+    //Going right
+    if (self.x_Vel > 0 && self.y_Vel == 0) {
+        //NSLog(@"I am Going Right");
+        self.direction = @"Right";
+    }
+    
+    //Going left
+    if (self.x_Vel < 0 && self.y_Vel == 0) {
+        self.direction = @"Left";
+    }
+    
+    //Going Up
+    if (self.y_Vel < 0 && self.x_Vel == 0) {
+        NSLog(@"I am going UP");
+        self.direction = @"Up";
+    }
+    
+    //Going Down
+    if (self.y_Vel > 0 && self.x_Vel == 0) {
+        self.direction = @"Down";
+    }
+    
+    if (self.x_Vel > 0 && self.y_Vel > 0) {
+        NSLog(@"I am turning Bitch");
+        self.direction = @"LeftTurn";
+    }
+    
+    self.x_Pos = self.x_Pos + self.x_Vel*(float)cos(self.radian)*delta;
+    self.y_Pos = self.y_Pos + self.y_Vel*(float)sin(self.radian)*delta;
     
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
 }
 
-- (void) turn:(int)modifier
+- (void) turnRight
 {
-    self.angle += 5 * modifier;
-    carSprite.rotation -= 5 * modifier;
+    self.angle += 10;
+    carSprite.rotation -= 10;
+}
+
+- (void) turnLeft
+{
+    self.angle -= 10;
+    carSprite.rotation += 10;
+}
+
+- (void) straight
+{
+    self.angle = 0;
+    carSprite.rotation = 0;
 }
 
 
