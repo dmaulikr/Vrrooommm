@@ -18,7 +18,7 @@
 /**
  *  The main scene
  */
-@interface HelloWorldScene : CCScene{
+@interface HelloWorldScene : CCScene <GKPeerPickerControllerDelegate, GKSessionDelegate> {
     GKPeerPickerController *mPicker;
     NSMutableArray *mPeers;
     GKSession *mSession;
