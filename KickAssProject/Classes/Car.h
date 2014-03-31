@@ -10,6 +10,8 @@
 #import "cocos2d.h"
 #import "cocos2d-ui.h"
 
+#define MAX_SPEED 150
+
 @interface Car : CCNode
 
 @property float mass;
@@ -27,6 +29,8 @@
 @property float lastMessage;
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *) filename;
+- (void) setSpeedLimit:(float)limit;
+- (void) resetSpeedLimit;
 - (void) update:(CCTime) delta;
 - (void) turnRight:(float) ang;
 - (void) turnLeft:(float) ang;

@@ -140,28 +140,18 @@
 
 - (void) update:(CCTime)delta
 {
-    
-    ccColor4B* centerBuffer = malloc(sizeof(ccColor4B));
-    
-    int dpi = winSize.width == 2048 ? 2 : 1; // Is Retina?
-    float x = redCar.x_Pos / scale_x * dpi;
-    float y = winSize.height - redCar.y_Pos / scale_y * dpi;
-    
-    //float x = redCar.x_Pos / scale_x;
-    //float y = self.contentSize.height - redCar.y_Pos / scale_y;
-    
-    
-    //NSLog(@"OUTSIDE: Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
-    //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
-    //NSLog(@"Angle: %f", [redCar angle]);
-    
-    
-    glReadPixels(x, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
-    
-    ccColor4B centerColour = centerBuffer[0];
-    
-    //NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
-    
+    ccColor4B buffer;
+    short pixelDensity = (winSize.width == 2048) ? 2 : 1;
+    float x = (redCar.x_Pos / scale_x * pixelDensity);
+    float y = (redCar.y_Pos / scale_y * pixelDensity);
+    glReadPixels(x, winSize.height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &buffer);
+    if (buffer.r == 255 && buffer.g == 255 && buffer.b == 255) {
+        [redCar setSpeedLimit:30];
+    }
+    else {
+        [redCar resetSpeedLimit];
+    }
+
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
         [redCar setX_Vel:[redCar x_Vel] + delta*diff_from_touch_pos_accl];

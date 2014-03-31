@@ -12,7 +12,7 @@
 {
     CCSprite *carSprite;
     float rot;
-    float MAX_SPEED;
+    float maxSpeed;
 }
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *)filename
@@ -20,7 +20,7 @@
     self = [super init];
     
     if (self) {
-        MAX_SPEED = 150;
+        maxSpeed = MAX_SPEED;
         [self setX_Pos:x_Pos];
         [self setY_Pos:y_Pos];
         rot = 0;
@@ -39,6 +39,16 @@
     return self;
 }
 
+- (void) setSpeedLimit:(float)limit
+{
+    maxSpeed = limit;
+}
+
+- (void) resetSpeedLimit
+{
+    maxSpeed = MAX_SPEED;
+}
+
 - (void) update:(CCTime) delta
 {
     self.radian = self.angle*(M_PI/180);
@@ -50,12 +60,12 @@
         self.y_Pos += self.y_Correction;
         self.y_Correction = 0;
     } else {
-        if (self.x_Vel > MAX_SPEED) {
-            self.x_Vel = MAX_SPEED;
+        if (self.x_Vel > maxSpeed) {
+            self.x_Vel = maxSpeed;
         }
         
-        if (self.y_Vel > MAX_SPEED) {
-            self.y_Vel = MAX_SPEED;
+        if (self.y_Vel > maxSpeed) {
+            self.y_Vel = maxSpeed;
         }
         
         self.x_Pos = self.x_Pos + self.x_Vel*delta*cos(self.radian);
