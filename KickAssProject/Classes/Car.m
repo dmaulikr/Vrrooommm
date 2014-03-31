@@ -93,5 +93,13 @@
     carSprite.rotation = 0;
 }
 
+- (void) updateWithXPos:(float)x andYPos:(float)y andAngle:(float)a
+{
+    self.x_Pos = x;
+    self.y_Pos = y;
+    self.angle = a;
+    carSprite.rotation = a * -1;
+}
+
 
 @end

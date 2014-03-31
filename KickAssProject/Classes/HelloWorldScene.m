@@ -176,10 +176,16 @@
     [redCar checkCol:self.contentSize.width andHeight:self.contentSize.height];
     [redCar update:delta];
     NSString* positionData = [NSString stringWithFormat:@"Position (%f, %f)", [redCar x_Pos], [redCar y_Pos]];
-    [mSession sendData:[positionData dataUsingEncoding:NSASCIIStringEncoding]
-               toPeers:mPeers
-          withDataMode:GKSendDataReliable
-                 error:nil];
+    
+    NSMutableData* message = [NSMutableData alloc];
+    float msg_X_Pos = [redCar x_Pos];
+    float msg_Y_Pos = [redCar y_Pos];
+    float msg_Angle = [redCar angle];
+    [message appendBytes:&msg_X_Pos length:sizeof(msg_X_Pos)];
+    [message appendBytes:&msg_Y_Pos length:sizeof(msg_Y_Pos)];
+    [message appendBytes:&msg_Angle length:sizeof(msg_Angle)];
+    
+    [mSession sendData:message toPeers:mPeers withDataMode:GKSendDataReliable error:nil];
 }
 
 - (void)dealloc
@@ -378,12 +384,19 @@
 
 - (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context
 {
-	NSString *str;
-	str = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-	NSLog(@"Received data: %@", str);
+    float msg_X_Pos, msg_Y_Pos, msg_Angle;
+    unsigned int offset = 0;
+    
+    [data getBytes:&msg_X_Pos length:sizeof(float)];
+    offset += sizeof(float);
+    [data getBytes:&msg_Y_Pos range:NSMakeRange(offset, sizeof(float))];
+    offset += sizeof(float);
+    [data getBytes:&msg_Angle range:NSMakeRange(offset, sizeof(float))];
+    
+	NSLog(@"Received data: X:%f Y:%f Angle:%f", msg_X_Pos, msg_Y_Pos, msg_Angle);
+    NSString *str = [NSString stringWithFormat:@"Received data: X:%f Y:%f Angle:%f", msg_X_Pos, msg_Y_Pos, msg_Angle];
     [networkButton setTitle:str];
-	if ([str hasPrefix:@"\x04\vstreamtype"])
-		str = @"call established";
+    [blueCar updateWithXPos:msg_X_Pos andYPos:msg_Y_Pos andAngle:msg_Angle];
 }
 
 /* Indicates a state change for the given peer. */
