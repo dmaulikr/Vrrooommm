@@ -19,6 +19,7 @@
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
+    Car *blueCar;
     BOOL isAcclBeingTouched;
     BOOL isBrakeBeingTouched;
     BOOL isRightSideBeingTouched;
@@ -121,11 +122,12 @@
     backButton.exclusiveTouch = NO;
     
     
-    
+    blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"blueCar.png"];
 
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
     [self addChild:redCar];
+    [self addChild:blueCar];
     
     // done
 	return self;
@@ -213,8 +215,6 @@
 // -----------------------------------------------------------------------
 #pragma mark - Touch Handler
 // -----------------------------------------------------------------------
-
-
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
@@ -347,32 +347,26 @@
                                withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
 }
 
-/* Notifies delegate that the user cancelled the picker.
- */
+/* Notifies delegate that the user cancelled the picker. */
 - (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker{
 }
 
-/* Notifies delegate that the connection type is requesting a GKSession object.
- You should return a valid GKSession object for use by the picker.
- If this method is not implemented or returns 'nil',
- a default GKSession is created on the delegate's behalf.
- */
-- (GKSession *)peerPickerController:(GKPeerPickerController *)picker
-		   sessionForConnectionType:(GKPeerPickerConnectionType)type
+/*
+    Notifies delegate that the connection type is requesting a GKSession object.
+    You should return a valid GKSession object for use by the picker.
+    If this method is not implemented or returns 'nil',
+    a default GKSession is created on the delegate's behalf.
+*/
+- (GKSession *)peerPickerController:(GKPeerPickerController *)picker sessionForConnectionType:(GKPeerPickerConnectionType)type
 {
 	NSString *str = [[UIDevice currentDevice] name];
 	NSLog(@"Preparing session for user %@", str);
-	GKSession *session = [[GKSession alloc] initWithSessionID:@"GameKitTest session"
-                                                  displayName:str
-                                                  sessionMode:GKSessionModePeer];
+	GKSession *session = [[GKSession alloc] initWithSessionID:@"GameKitTest session" displayName:str sessionMode:GKSessionModePeer];
 	return session;
 }
 
-/* Notifies delegate that local app was connected to a remote peer, initiated either side.
- */
-- (void)peerPickerController:(GKPeerPickerController *)picker
-			  didConnectPeer:(NSString *)peerID
-				   toSession:(GKSession *)session
+/* Notifies delegate that local app was connected to a remote peer, initiated either side. */
+- (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session
 {
 	NSLog(@"Connected from %@", peerID);
 	
@@ -382,25 +376,18 @@
 	[picker dismiss];
 }
 
-- (void)receiveData:(NSData *)data
-		   fromPeer:(NSString *)peer
-		  inSession:(GKSession *)session
-			context:(void *)context
+- (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context
 {
 	NSString *str;
-	str = [[NSString alloc] initWithData:data
-								encoding:NSASCIIStringEncoding];
+	str = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 	NSLog(@"Received data: %@", str);
     [networkButton setTitle:str];
 	if ([str hasPrefix:@"\x04\vstreamtype"])
 		str = @"call established";
 }
 
-/* Indicates a state change for the given peer.
- */
-- (void)session:(GKSession *)session
-		   peer:(NSString *)peerID
- didChangeState:(GKPeerConnectionState)state
+/* Indicates a state change for the given peer. */
+- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
 	switch (state) {
 		case GKPeerStateConnected:
