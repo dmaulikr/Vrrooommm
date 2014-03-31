@@ -112,6 +112,7 @@
         networkButton.color = black;
         [self addChild:networkButton];
         blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"blueCar.png"];
+        [self addChild:blueCar];
     }
     
     
@@ -129,7 +130,7 @@
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
     [self addChild:redCar];
-    [self addChild:blueCar];
+    
     
     // done
 	return self;
