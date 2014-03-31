@@ -40,12 +40,21 @@
 
 - (void) update:(CCTime) delta
 {
-    
     self.radian = self.angle*(M_PI/180);
-    
-    
-    self.x_Pos = self.x_Pos + self.x_Vel*delta*cos(self.radian);
-    self.y_Pos = self.y_Pos + self.y_Vel*delta*sin(self.radian);
+    //smooth out position correction
+    if(self.x_Correction != 0 || self.y_Correction != 0){
+        self.x_Pos += self.x_Correction;
+        self.x_Correction = 0;
+        self.y_Pos += self.y_Correction;
+        self.y_Correction = 0;
+    } else {
+        
+        
+        
+        
+        self.x_Pos = self.x_Pos + self.x_Vel*delta*cos(self.radian);
+        self.y_Pos = self.y_Pos + self.y_Vel*delta*sin(self.radian);
+    }
     
     carSprite.position = ccp(self.x_Pos, self.y_Pos);
 }
@@ -95,8 +104,8 @@
 
 - (void) updateWithXPos:(float)x andYPos:(float)y andXVel:(float)xVel andYVel:(float)yVel andAngle:(float)a
 {
-    self.x_Pos = x;
-    self.y_Pos = y;
+    self.x_Correction = x - self.x_Pos;
+    self.y_Correction = y - self.y_Pos;
     self.angle = a;
     self.x_Vel = xVel;
     self.y_Vel = yVel;

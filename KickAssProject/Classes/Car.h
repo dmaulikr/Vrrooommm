@@ -15,6 +15,8 @@
 @property float mass;
 @property float x_Pos;
 @property float y_Pos;
+@property float x_Correction;
+@property float y_Correction;
 @property float x_Vel;
 @property float y_Vel;
 @property float car_Width;
@@ -22,6 +24,7 @@
 @property NSString* direction;
 @property float angle;
 @property float radian;
+@property float lastMessage;
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *) filename;
 - (void) update:(CCTime) delta;
