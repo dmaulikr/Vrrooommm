@@ -30,6 +30,7 @@
 - (void) turnLeft;
 - (void) straight;
 - (void) checkCol:(float) width andHeight:(float) height;
-- (void) updateWithXPos:(float)x andYPos:(float)y andAngle:(float)a;
+- (void) updateWithXPos:(float)x andYPos:(float)y andXVel:(float)xVel andYVel:(float)yVel andAngle:(float)a;
+
 
 @end
