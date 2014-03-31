@@ -33,7 +33,7 @@
     CGPoint *location;
     
     float diff_from_touch_pos_accl;
-    float diff_x_pos;
+    float diff_from_touch_pos_angle;
     
     float scale_x;
     float scale_y;
@@ -56,13 +56,14 @@
 
 // -----------------------------------------------------------------------
 
-- (id)init
+- (id)initWith:(BOOL)multiPlayer
 {
     // Apple recommend assigning self with supers return value
     
     
     self = [super init];
     if (!self) return(nil);
+    self.multiPlayer = multiPlayer;
     
     //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     [self setUserInteractionEnabled:YES];
@@ -83,6 +84,7 @@
     // Create a colored background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
     //Track directions
     //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};
@@ -100,17 +102,18 @@
     [self addChild:background];
     
     //GameKit Network
-    mPicker = [[GKPeerPickerController alloc] init];
-	mPicker.delegate = self;
-	mPeers = [[NSMutableArray alloc] init];
-    networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
-    networkButton.positionType = CCPositionTypeNormalized;
-    networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
-    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
-    networkButton.color = black;
-    [self addChild:networkButton];
+    if (self.multiPlayer) {
+        mPicker = [[GKPeerPickerController alloc] init];
+        mPicker.delegate = self;
+        mPeers = [[NSMutableArray alloc] init];
+        networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
+        networkButton.positionType = CCPositionTypeNormalized;
+        networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
+        networkButton.color = black;
+        [self addChild:networkButton];
+        blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"blueCar.png"];
+    }
     
-    //Create a line (Eventually a track)
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
@@ -122,7 +125,6 @@
     backButton.exclusiveTouch = NO;
     
     
-    blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"blueCar.png"];
 
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
@@ -144,6 +146,10 @@
     float x = redCar.x_Pos / scale_x * dpi;
     float y = winSize.height - redCar.y_Pos / scale_y * dpi;
     
+    //float x = redCar.x_Pos / scale_x;
+    //float y = self.contentSize.height - redCar.y_Pos / scale_y;
+    
+    
     //NSLog(@"OUTSIDE: Velocity (%f , %f) and Direction: %@" , [redCar x_Vel], [redCar y_Vel], [redCar direction]);
     //NSLog(@"Positon of the Car (%f , %f) ", [redCar x_Pos] , [redCar y_Pos]);
     //NSLog(@"Angle: %f", [redCar angle]);
@@ -151,7 +157,9 @@
     
     glReadPixels(x, y , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, centerBuffer);
     
-    //ccColor4B centerColour = centerBuffer[0];
+    ccColor4B centerColour = centerBuffer[0];
+    
+    //NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
     
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
@@ -166,11 +174,11 @@
     }
     
     if ( isTurningRight){
-        [redCar turnRight];
+        [redCar turnRight:diff_from_touch_pos_angle];
     }
     
     else if (isTurningLeft) {
-        [redCar turnLeft];
+        [redCar turnLeft:diff_from_touch_pos_angle];
     }
     
     [redCar checkCol:self.contentSize.width andHeight:self.contentSize.height];
@@ -240,27 +248,6 @@
             touch_x_Pos = touchLoc.x;
         }
         
-        /*
-        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y < self.contentSize.height/2) {
-            isAcclBeingTouched = YES;
-        }
-        
-        if (touchLoc.x > self.contentSize.width/2 && touchLoc.y > self.contentSize.height/2) {
-            isBrakeBeingTouched = YES;
-        }*/
-        
-        
-        //Left Side of screen
-        /*
-        if (touchLoc.x < self.contentSize.width/2) {
-            if (touchLoc.x < self.contentSize.width/4) {
-                isTurningLeft = YES;
-            }
-            else {
-                isTurningRight = YES;
-            }
-            
-        }*/
         //NSLog(@"RedCar Position (%f , %f) Velocity X: %f , Y: %f ", [redCar x_Pos], [redCar y_Pos], [redCar x_Vel], [redCar y_Vel]);
     }
     
@@ -323,12 +310,14 @@
     
     else if (touchLoc.x < self.contentSize.width/2) {
         if (touchLoc.x > touch_x_Pos) {
+            diff_from_touch_pos_angle = (touchLoc.x - touch_x_Pos)/20;
             //NSLog(@"Slide Right");
             isTurningRight = YES;
             isTurningLeft = NO;
         }
         else
         {
+            diff_from_touch_pos_angle = (touchLoc.x - touch_x_Pos)/20;
             //NSLog(@"Slide Left");
             isTurningRight = NO;
             isTurningLeft = YES;
@@ -349,8 +338,15 @@
 - (void)onBackClicked:(id)sender
 {
     // back to intro scene with transition
-    [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
-                               withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+    if (self.multiPlayer) {
+        [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
+                                   withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+    }
+    else{
+        [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
+                                   withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+    }
+    
 }
 
 /* Notifies delegate that the user cancelled the picker. */
@@ -420,6 +416,7 @@
 		}
 	}
 }
+
 
 // -----------------------------------------------------------------------
 @end

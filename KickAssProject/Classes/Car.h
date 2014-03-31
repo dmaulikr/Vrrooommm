@@ -25,9 +25,8 @@
 
 - (id) initCarWithMass:(float)mass withXPos:(float)x_Pos withYPos:(float)y_Pos withScaleX:(float)scalex withScaleY:(float)scaley file:(NSString *) filename;
 - (void) update:(CCTime) delta;
-- (void) turn:(int)modifer;
-- (void) turnRight;
-- (void) turnLeft;
+- (void) turnRight:(float) ang;
+- (void) turnLeft:(float) ang;
 - (void) straight;
 - (void) checkCol:(float) width andHeight:(float) height;
 - (void) updateWithXPos:(float)x andYPos:(float)y andAngle:(float)a;

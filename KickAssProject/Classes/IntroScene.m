@@ -46,11 +46,18 @@
     [self addChild:label];
     
     // Helloworld scene button
-    CCButton *helloWorldButton = [CCButton buttonWithTitle:@"Start" fontName:@"Verdana-Bold" fontSize:18.0f];
+    CCButton *helloWorldButton = [CCButton buttonWithTitle:@"MultiPlayer" fontName:@"Verdana-Bold" fontSize:18.0f];
     helloWorldButton.positionType = CCPositionTypeNormalized;
     helloWorldButton.position = ccp(0.5f, 0.35f);
-    [helloWorldButton setTarget:self selector:@selector(onSpinningClicked:)];
+    [helloWorldButton setTarget:self selector:@selector(onMultiPlayerClicked:)];
     [self addChild:helloWorldButton];
+    
+    //SinglePlayer Scene Button
+    CCButton *singlePlayerButton = [CCButton buttonWithTitle:@"SinglePlayer" fontName:@"Verdana-Bold" fontSize:18.0f];
+    singlePlayerButton.positionType = CCPositionTypeNormalized;
+    singlePlayerButton.position = ccp(0.5f, 0.30);
+    [singlePlayerButton setTarget:self selector:@selector(onSinglePlayerClicked:)];
+    [self addChild:singlePlayerButton];
 
     // done
 	return self;
@@ -60,12 +67,22 @@
 #pragma mark - Button Callbacks
 // -----------------------------------------------------------------------
 
-- (void)onSpinningClicked:(id)sender
+- (void)onMultiPlayerClicked:(id)sender
 {
-    // start spinning scene with transition
-    [[CCDirector sharedDirector] replaceScene:[HelloWorldScene scene]
+    HelloWorldScene *scene = [[HelloWorldScene alloc] initWith:YES];
+    [[CCDirector sharedDirector] replaceScene:scene
                                withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+    //[scene setMultiPlayer:YES ];
 }
+
+- (void)onSinglePlayerClicked:(id)sender
+{
+    HelloWorldScene *scene = [[HelloWorldScene alloc] initWith:NO];
+    [[CCDirector sharedDirector] replaceScene:scene
+                               withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+    //[scene setMultiPlayer:NO];
+}
+
 
 // -----------------------------------------------------------------------
 @end
