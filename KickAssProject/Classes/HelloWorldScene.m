@@ -409,23 +409,33 @@
 /* Indicates a state change for the given peer. */
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
-	switch (state) {
-		case GKPeerStateConnected:
-		{
-            NSString *str = [NSString stringWithFormat:@"Connected from: \"%@\"",
-							 [session displayNameForPeer:peerID]];
-			[networkButton setTitle:str];
-			NSLog(@"%@", str);
-
-			[mPeers addObject:peerID];
-			break;
-		}
-		case GKPeerStateDisconnected:
-		{
-			[mPeers removeObject:peerID];
-			break;
-		}
-	}
+    switch (state) {
+        case GKPeerStateConnecting: {
+            // Do nothing
+            break;
+        }
+        case GKPeerStateConnected:
+        {
+            NSString *str = [NSString stringWithFormat:@"Connected from: \"%@\"", [session displayNameForPeer:peerID]];
+            [networkButton setTitle:str];
+            NSLog(@"%@", str);
+            [mPeers addObject:peerID];
+            break;
+        }
+        case GKPeerStateAvailable: {
+            // Do nothing
+            break;
+        }
+        case GKPeerStateDisconnected:
+        {
+            [mPeers removeObject:peerID];
+            break;
+        }
+        case GKPeerStateUnavailable: {
+            // Do nothing
+            break;
+        }
+    }
 }
 
 
