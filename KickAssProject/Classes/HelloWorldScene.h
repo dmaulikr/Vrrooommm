@@ -22,12 +22,18 @@
     GKPeerPickerController *mPicker;
     NSMutableArray *mPeers;
     GKSession *mSession;
+    
 }
+
+@property BOOL multiPlayer;
 
 // -----------------------------------------------------------------------
 
 + (HelloWorldScene *)scene;
-- (id)init;
+//- (id)init;
+
+- (id)initWith:(BOOL)multiPlayer;
+
 
 // -----------------------------------------------------------------------
 @end

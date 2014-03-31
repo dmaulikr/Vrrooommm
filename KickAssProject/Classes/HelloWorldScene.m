@@ -55,13 +55,14 @@
 
 // -----------------------------------------------------------------------
 
-- (id)init
+- (id)initWith:(BOOL)multiPlayer
 {
     // Apple recommend assigning self with supers return value
     
     
     self = [super init];
     if (!self) return(nil);
+    self.multiPlayer = multiPlayer;
     
     //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     [self setUserInteractionEnabled:YES];
@@ -82,6 +83,7 @@
     // Create a colored background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
     //Track directions
     //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};
@@ -99,15 +101,17 @@
     [self addChild:background];
     
     //GameKit Network
-    mPicker = [[GKPeerPickerController alloc] init];
-	mPicker.delegate = self;
-	mPeers = [[NSMutableArray alloc] init];
-    networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
-    networkButton.positionType = CCPositionTypeNormalized;
-    networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
-    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
-    networkButton.color = black;
-    [self addChild:networkButton];
+    if (self.multiPlayer) {
+        mPicker = [[GKPeerPickerController alloc] init];
+        mPicker.delegate = self;
+        mPeers = [[NSMutableArray alloc] init];
+        networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
+        networkButton.positionType = CCPositionTypeNormalized;
+        networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
+        networkButton.color = black;
+        [self addChild:networkButton];
+    }
+    
     
     // Create a back button
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
@@ -118,9 +122,6 @@
     [self addChild:backButton];
     backButton.exclusiveTouch = NO;
     
-    
-    
-
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
     
     [self addChild:redCar];
@@ -153,7 +154,7 @@
     
     ccColor4B centerColour = centerBuffer[0];
     
-    NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
+    //NSLog(@"Color under (%f , %f) is RGB( %hhu, %hhu , %hhu) ", x, y, centerColour.r, centerColour.g, centerColour.b);
     
     if (isAcclBeingTouched) {
         //NSLog(@"Speeding up");
@@ -328,8 +329,15 @@
 - (void)onBackClicked:(id)sender
 {
     // back to intro scene with transition
-    [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
-                               withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+    if (self.multiPlayer) {
+        [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
+                                   withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
+    }
+    else{
+        [[CCDirector sharedDirector] replaceScene:[IntroScene scene]
+                                   withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+    }
+    
 }
 
 /* Notifies delegate that the user cancelled the picker.
@@ -405,6 +413,7 @@
 		}
 	}
 }
+
 
 // -----------------------------------------------------------------------
 @end
