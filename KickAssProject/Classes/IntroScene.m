@@ -35,29 +35,31 @@
     if (!self) return(nil);
     
     // Create a colored background (Dark Grey)
-    CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f]];
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"menu.png"];
+    background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
     
-    // Hello world
-    CCLabelTTF *label = [CCLabelTTF labelWithString:@"Slot Car Racer" fontName:@"Chalkduster" fontSize:36.0f];
-    label.positionType = CCPositionTypeNormalized;
-    label.color = [CCColor redColor];
-    label.position = ccp(0.5f, 0.5f); // Middle of screen
-    [self addChild:label];
-    
     // Helloworld scene button
-    CCButton *helloWorldButton = [CCButton buttonWithTitle:@"MultiPlayer" fontName:@"Verdana-Bold" fontSize:18.0f];
+    CCButton *helloWorldButton = [CCButton buttonWithTitle:@"MultiPlayer" fontName:@"Chalkduster" fontSize:36.0f];
     helloWorldButton.positionType = CCPositionTypeNormalized;
-    helloWorldButton.position = ccp(0.5f, 0.35f);
+    helloWorldButton.position = ccp(0.5f, 0.20f);
     [helloWorldButton setTarget:self selector:@selector(onMultiPlayerClicked:)];
     [self addChild:helloWorldButton];
     
     //SinglePlayer Scene Button
-    CCButton *singlePlayerButton = [CCButton buttonWithTitle:@"SinglePlayer" fontName:@"Verdana-Bold" fontSize:18.0f];
+    CCButton *singlePlayerButton = [CCButton buttonWithTitle:@"SinglePlayer" fontName:@"Chalkduster" fontSize:36.0f];
     singlePlayerButton.positionType = CCPositionTypeNormalized;
-    singlePlayerButton.position = ccp(0.5f, 0.30);
+    singlePlayerButton.position = ccp(0.5f, 0.13);
     [singlePlayerButton setTarget:self selector:@selector(onSinglePlayerClicked:)];
     [self addChild:singlePlayerButton];
+    
+    //LeaderBoard Scene Button
+    CCButton *leaderBoardButton = [CCButton buttonWithTitle:@"LeaderBoard" fontName:@"Chalkduster" fontSize:36.0f];
+    leaderBoardButton.positionType = CCPositionTypeNormalized;
+    leaderBoardButton.position = ccp(0.5f, 0.06);
+    //[leaderBoardButton setTarget:self selector:@selector(onSinglePlayerClicked:)];
+    [self addChild:leaderBoardButton];
+
 
     // done
 	return self;

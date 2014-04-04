@@ -16,6 +16,8 @@
 
 @implementation HelloWorldScene
 {
+    UILabel *timeLabel;
+    
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
@@ -79,10 +81,10 @@
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
-    //bimage = [[UIImage alloc] initWithContentsOfFile:@"track1.png"];
+    //bimage = [[UIImage alloc] initWithContentsOfFile:@"track3.png"];
     
     // Create a colored background
-    CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"track.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
@@ -111,7 +113,7 @@
         networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
         networkButton.color = black;
         [self addChild:networkButton];
-        blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"blueCar.png"];
+        blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"blue_car.png"];
         [self addChild:blueCar];
     }
     
@@ -127,7 +129,7 @@
     
     
 
-    redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x withScaleY:scale_y file:@"car.png"];
+    redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"red_car.png"];
     
     [self addChild:redCar];
     
@@ -145,6 +147,7 @@
     float x = (redCar.x_Pos / scale_x * pixelDensity);
     float y = (redCar.y_Pos / scale_y * pixelDensity);
     glReadPixels(x, winSize.height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &buffer);
+    NSLog(@"At Pos (%f, %f) color is : (%hhu, %hhu, %hhu)", x, y, buffer.r, buffer.g, buffer.b);
     if (buffer.r == 255 && buffer.g == 255 && buffer.b == 255) {
         [redCar setSpeedLimit:30];
     }
@@ -252,6 +255,8 @@
     //CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
     
 }
+
+
 
 - (void) touchEnded:(UITouch *) touch withEvent:(UIEvent *)event{
     
