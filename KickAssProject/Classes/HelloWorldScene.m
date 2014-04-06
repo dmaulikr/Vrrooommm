@@ -16,7 +16,10 @@
 
 @implementation HelloWorldScene
 {
-    UILabel *timeLabel;
+    //CCLabelTTF *timeLabel;
+    CCTimer *timer;
+    float time;
+
     
     CCSprite *_sprite;
     CCButton* networkButton;
@@ -67,7 +70,6 @@
     if (!self) return(nil);
     self.multiPlayer = multiPlayer;
     
-    //[CCLabelTTF create("Hello World", "Helvetica", 12,CCSizeMake(245, 32), kCCTextAlignmentCenter)];
     [self setUserInteractionEnabled:YES];
     [self setMultipleTouchEnabled:YES];
     
@@ -84,12 +86,18 @@
     //bimage = [[UIImage alloc] initWithContentsOfFile:@"track3.png"];
     
     // Create a colored background
-    CCSprite *background = [CCSprite spriteWithImageNamed:@"track.png"];
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"track3.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
+    CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"Time: " fontName:@"Verdana-Bold" fontSize:36.0f];
+    timeLabel.positionType = CCPositionTypeNormalized;
+    timeLabel.position = ccp(0.5, 0.5);
+    timeLabel.color = black;
+    [self addChild:timeLabel];
+    
     //Track directions
-    //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};
+    //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};david.legare0291@gmail.com
     //trackDirections = @[@"Right", @"LeftTurn", @"Up", @"LeftTurn", @"Left", @"LeftTurn", @"Down", @"LeftTurn"];
     //index = 0;
     
@@ -110,7 +118,7 @@
         mPeers = [[NSMutableArray alloc] init];
         networkButton = [CCButton buttonWithTitle:@"Waiting for connection..." fontName:@"Verdana-Bold" fontSize:18.0f];
         networkButton.positionType = CCPositionTypeNormalized;
-        networkButton.position = ccp(0.35f, 0.95f); // Top Right of screen
+        networkButton.position = ccp(0.35f, 1.0f); // Top Right of screen
         networkButton.color = black;
         [self addChild:networkButton];
         blueCar = [[Car alloc] initCarWithMass:50 withXPos:250*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"blue_car.png"];
@@ -122,7 +130,7 @@
     CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
     backButton.color = black;
     backButton.positionType = CCPositionTypeNormalized;
-    backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
+    backButton.position = ccp(0.90f, 0.95f); // Top Right of screen
     [backButton setTarget:self selector:@selector(onBackClicked:)];
     [self addChild:backButton];
     backButton.exclusiveTouch = NO;
@@ -147,7 +155,7 @@
     float x = (redCar.x_Pos / scale_x * pixelDensity);
     float y = (redCar.y_Pos / scale_y * pixelDensity);
     glReadPixels(x, winSize.height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &buffer);
-    NSLog(@"At Pos (%f, %f) color is : (%hhu, %hhu, %hhu)", x, y, buffer.r, buffer.g, buffer.b);
+    //NSLog(@"At Pos (%f, %f) color is : (%hhu, %hhu, %hhu)", x, y, buffer.r, buffer.g, buffer.b);
     if (buffer.r == 255 && buffer.g == 255 && buffer.b == 255) {
         [redCar setSpeedLimit:30];
     }
