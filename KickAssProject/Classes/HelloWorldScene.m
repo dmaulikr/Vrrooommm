@@ -83,8 +83,6 @@
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
-    //bimage = [[UIImage alloc] initWithContentsOfFile:@"track3.png"];
-    
     // Create a colored background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track3.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
@@ -95,11 +93,6 @@
     timeLabel.position = ccp(0.5, 0.5);
     timeLabel.color = black;
     [self addChild:timeLabel];
-    
-    //Track directions
-    //"Right", "LeftTurn", "Up", "LeftTurn", "Left", "LeftTurn", "Down", "LeftTurn"};david.legare0291@gmail.com
-    //trackDirections = @[@"Right", @"LeftTurn", @"Up", @"LeftTurn", @"Left", @"LeftTurn", @"Down", @"LeftTurn"];
-    //index = 0;
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
@@ -135,8 +128,6 @@
     [self addChild:backButton];
     backButton.exclusiveTouch = NO;
     
-    
-
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"red_car.png"];
     
     [self addChild:redCar];
