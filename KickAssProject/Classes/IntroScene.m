@@ -36,7 +36,8 @@
     
     // Create a colored background (Dark Grey)
     CCSprite *background = [CCSprite spriteWithImageNamed:@"menu.png"];
-    background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    background.positionType = CCPositionTypeNormalized;
+    background.position = ccp(0.5f, 0.5f);
     [self addChild:background];
     
     // Helloworld scene button

@@ -17,8 +17,10 @@
 @implementation HelloWorldScene
 {
     CCLabelTTF *timeLabel;
+    CCLabelTTF *lapLabel;
     CCTimer *timer;
     float time;
+    int lapCounter;
 
     CCSprite *_sprite;
     CCButton* networkButton;
@@ -74,20 +76,17 @@
     
     NSLog(@"Is being enabled: %i ",[self isMultipleTouchEnabled]);
     
-    
     accl_x = 15;
     accl_y = 15;
-    
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
     
     // Create a colored background
+    // Create a background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track3.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
-    
-    
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
@@ -98,6 +97,9 @@
     background.scaleY = scale_y;
     
     [self addChild:background];
+    
+    //Add a start and finish line
+    
     
     //GameKit Network
     if (self.multiPlayer) {
@@ -129,7 +131,11 @@
     timeLabel.color = black;
     [self addChild:timeLabel];
     
-    //[self schedule:@selector(update) interval:1];
+    lapLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Lap: 1"] fontName:@"Verdana-Bold" fontSize:36.0f];
+    lapLabel.positionType = CCPositionTypeNormalized;
+    lapLabel.position = ccp(0.5f, 0.4f);
+    lapLabel.color = black;
+    [self addChild:lapLabel];
     
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"red_car.png"];
     
@@ -150,7 +156,7 @@
     float x = (redCar.x_Pos / scale_x * pixelDensity);
     float y = (redCar.y_Pos / scale_y * pixelDensity);
     glReadPixels(x, winSize.height - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &buffer);
-    //NSLog(@"At Pos (%f, %f) color is : (%hhu, %hhu, %hhu)", x, y, buffer.r, buffer.g, buffer.b);
+    NSLog(@"At Pos (%f, %f) color is : (%hhu, %hhu, %hhu)", x, y, buffer.r, buffer.g, buffer.b);
     if (buffer.r == 255 && buffer.g == 255 && buffer.b == 255) {
         [redCar setSpeedLimit:30];
     }
