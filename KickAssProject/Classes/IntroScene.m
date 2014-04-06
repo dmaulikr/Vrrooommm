@@ -10,6 +10,7 @@
 // Import the interfaces
 #import "IntroScene.h"
 #import "HelloWorldScene.h"
+#import "LeaderboardScene.h"
 
 // -----------------------------------------------------------------------
 #pragma mark - IntroScene
@@ -38,12 +39,14 @@
     CCSprite *background = [CCSprite spriteWithImageNamed:@"menu.png"];
     background.positionType = CCPositionTypeNormalized;
     background.position = ccp(0.5f, 0.5f);
+    background.scaleX = self.contentSize.width / 1024;
+    background.scaleY = self.contentSize.height / 768;
     [self addChild:background];
     
     // Helloworld scene button
     CCButton *helloWorldButton = [CCButton buttonWithTitle:@"MultiPlayer" fontName:@"Chalkduster" fontSize:36.0f];
     helloWorldButton.positionType = CCPositionTypeNormalized;
-    helloWorldButton.position = ccp(0.5f, 0.20f);
+    helloWorldButton.position = ccp(0.5f, 0.21f);
     [helloWorldButton setTarget:self selector:@selector(onMultiPlayerClicked:)];
     [self addChild:helloWorldButton];
     
@@ -57,8 +60,8 @@
     //LeaderBoard Scene Button
     CCButton *leaderBoardButton = [CCButton buttonWithTitle:@"LeaderBoard" fontName:@"Chalkduster" fontSize:36.0f];
     leaderBoardButton.positionType = CCPositionTypeNormalized;
-    leaderBoardButton.position = ccp(0.5f, 0.06);
-    //[leaderBoardButton setTarget:self selector:@selector(onSinglePlayerClicked:)];
+    leaderBoardButton.position = ccp(0.5f, 0.05);
+    [leaderBoardButton setTarget:self selector:@selector(onLeaderboardClicked:)];
     [self addChild:leaderBoardButton];
 
 
@@ -84,6 +87,14 @@
     [[CCDirector sharedDirector] replaceScene:scene
                                withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
     //[scene setMultiPlayer:NO];
+}
+
+- (void)onLeaderboardClicked:(id)sender
+{
+    LeaderboardScene *scene = [[LeaderboardScene alloc] init];
+    [[CCDirector sharedDirector] replaceScene:scene
+                               withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionUp duration:1.0f]];
+    //[scene setMultiPlayer:YES ];
 }
 
 

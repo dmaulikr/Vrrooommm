@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3FEF42B118E754FA0086EF82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FEF42B018E754FA0086EF82 /* GameKit.framework */; };
+		3FFA919F18F1A770004867B3 /* LeaderboardScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA919E18F1A770004867B3 /* LeaderboardScene.m */; };
+		3FFA91A118F1AB48004867B3 /* leaderboards.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FFA91A018F1AB48004867B3 /* leaderboards.png */; };
 		4B05C87B18EE30F500A20833 /* track.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B05C87A18EE30F500A20833 /* track.png */; };
 		4B05C87D18EE346400A20833 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B05C87C18EE346400A20833 /* menu.png */; };
 		4B16B87B18F1C52600168465 /* startline.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B16B87A18F1C52600168465 /* startline.png */; };
@@ -236,6 +238,9 @@
 
 /* Begin PBXFileReference section */
 		3FEF42B018E754FA0086EF82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		3FFA919D18F1A770004867B3 /* LeaderboardScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardScene.h; sourceTree = "<group>"; };
+		3FFA919E18F1A770004867B3 /* LeaderboardScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardScene.m; sourceTree = "<group>"; };
+		3FFA91A018F1AB48004867B3 /* leaderboards.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leaderboards.png; sourceTree = "<group>"; };
 		4B05C87A18EE30F500A20833 /* track.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track.png; sourceTree = "<group>"; };
 		4B05C87C18EE346400A20833 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
 		4B16B87A18F1C52600168465 /* startline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startline.png; sourceTree = "<group>"; };
@@ -747,6 +752,7 @@
 		4B4D98CF18E0623C00C54757 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3FFA91A018F1AB48004867B3 /* leaderboards.png */,
 				4B05C87A18EE30F500A20833 /* track.png */,
 				4B05C87C18EE346400A20833 /* menu.png */,
 				4BB1E4FF18E78292005A3B8C /* track2.png */,
@@ -1579,6 +1585,8 @@
 				4B4D9B6518E0623F00C54757 /* IntroScene.m */,
 				4B6026A618E22BB70025B57C /* Car.h */,
 				4B6026A718E22BB70025B57C /* Car.m */,
+				3FFA919D18F1A770004867B3 /* LeaderboardScene.h */,
+				3FFA919E18F1A770004867B3 /* LeaderboardScene.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1667,6 +1675,7 @@
 				4BA4D97118ED0F5400589D5B /* red_car.png in Resources */,
 				4B4D98D118E0623C00C54757 /* Default.png in Resources */,
 				4B4D98DA18E0623C00C54757 /* Icon.png in Resources */,
+				3FFA91A118F1AB48004867B3 /* leaderboards.png in Resources */,
 				4B4D98E818E0623C00C54757 /* Icon-iPad-Spotlight-iOS7@2x.png in Resources */,
 				4B4D98D718E0623C00C54757 /* Default-Landscape~ipad.png in Resources */,
 				4B4D98EC18E0623C00C54757 /* Icon-Small.png in Resources */,
@@ -1762,6 +1771,7 @@
 				4B4D990618E0623C00C54757 /* CCActionInstant.m in Sources */,
 				4B4D9A0018E0623D00C54757 /* base64.c in Sources */,
 				4B4D9A3F18E0623E00C54757 /* OALAudioTrack.m in Sources */,
+				3FFA919F18F1A770004867B3 /* LeaderboardScene.m in Sources */,
 				4B4D998218E0623D00C54757 /* CCProgressNode.m in Sources */,
 				4B4D997518E0623D00C54757 /* CCPhysicsBody.m in Sources */,
 				4B4D99FA18E0623D00C54757 /* CCWindow.m in Sources */,
@@ -1988,6 +1998,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2016,6 +2030,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
