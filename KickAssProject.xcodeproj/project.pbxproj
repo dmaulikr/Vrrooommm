@@ -10,6 +10,7 @@
 		3FEF42B118E754FA0086EF82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FEF42B018E754FA0086EF82 /* GameKit.framework */; };
 		4B05C87B18EE30F500A20833 /* track.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B05C87A18EE30F500A20833 /* track.png */; };
 		4B05C87D18EE346400A20833 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B05C87C18EE346400A20833 /* menu.png */; };
+		4B16B87B18F1C52600168465 /* startline.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B16B87A18F1C52600168465 /* startline.png */; };
 		4B4D98B718E0623C00C54757 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B618E0623C00C54757 /* QuartzCore.framework */; };
 		4B4D98B918E0623C00C54757 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98B818E0623C00C54757 /* OpenGLES.framework */; };
 		4B4D98BB18E0623C00C54757 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4D98BA18E0623C00C54757 /* OpenAL.framework */; };
@@ -237,6 +238,7 @@
 		3FEF42B018E754FA0086EF82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		4B05C87A18EE30F500A20833 /* track.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = track.png; sourceTree = "<group>"; };
 		4B05C87C18EE346400A20833 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
+		4B16B87A18F1C52600168465 /* startline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startline.png; sourceTree = "<group>"; };
 		4B4D98B318E0623C00C54757 /* KickAssProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickAssProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B4D98B618E0623C00C54757 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4B4D98B818E0623C00C54757 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -750,6 +752,7 @@
 				4BB1E4FF18E78292005A3B8C /* track2.png */,
 				4BA4D96E18ED0F5400589D5B /* blue_car.png */,
 				4BA4D96F18ED0F5400589D5B /* red_car.png */,
+				4B16B87A18F1C52600168465 /* startline.png */,
 				4BB1E4FB18E70E76005A3B8C /* track1.png */,
 				4BA4D97218ED104000589D5B /* track3.png */,
 				4B4D98D018E0623C00C54757 /* Default.png */,
@@ -1675,6 +1678,7 @@
 				4B4D9A2C18E0623E00C54757 /* LICENSE_cocos2d.txt in Resources */,
 				4B4D98D518E0623C00C54757 /* Default-568h@2x.png in Resources */,
 				4B4D98F518E0623C00C54757 /* iTunesArtwork in Resources */,
+				4B16B87B18F1C52600168465 /* startline.png in Resources */,
 				4B4D98F018E0623C00C54757 /* Icon-Spotlight-iOS7.png in Resources */,
 				4B4D98E418E0623C00C54757 /* Icon-76@2x.png in Resources */,
 				4B05C87D18EE346400A20833 /* menu.png in Resources */,

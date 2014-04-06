@@ -99,6 +99,9 @@
     [self addChild:background];
     
     //Add a start and finish line
+    CCSprite *startline = [CCSprite spriteWithImageNamed:@"startline.png"];
+    startline.position = ccp(300*scale_x, 38*scale_y);
+    [self addChild:startline];
     
     
     //GameKit Network
