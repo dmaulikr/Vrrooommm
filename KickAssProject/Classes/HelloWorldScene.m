@@ -16,11 +16,10 @@
 
 @implementation HelloWorldScene
 {
-    //CCLabelTTF *timeLabel;
+    CCLabelTTF *timeLabel;
     CCTimer *timer;
     float time;
 
-    
     CCSprite *_sprite;
     CCButton* networkButton;
     Car *redCar;
@@ -88,11 +87,7 @@
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
-    CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"Time: " fontName:@"Verdana-Bold" fontSize:36.0f];
-    timeLabel.positionType = CCPositionTypeNormalized;
-    timeLabel.position = ccp(0.5, 0.5);
-    timeLabel.color = black;
-    [self addChild:timeLabel];
+    
     
     //scale fo the ipod screen
     winSize = [[CCDirector sharedDirector] viewSizeInPixels];
@@ -128,6 +123,14 @@
     [self addChild:backButton];
     backButton.exclusiveTouch = NO;
     
+    timeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Time: 0.00"] fontName:@"Verdana-Bold" fontSize:36.0f];
+    timeLabel.positionType = CCPositionTypeNormalized;
+    timeLabel.position = ccp(0.5f, 0.5f);
+    timeLabel.color = black;
+    [self addChild:timeLabel];
+    
+    //[self schedule:@selector(update) interval:1];
+    
     redCar = [[Car alloc] initCarWithMass:50 withXPos:300*scale_x withYPos:38*scale_y withScaleX:scale_x/2 withScaleY:scale_y/2 file:@"red_car.png"];
     
     [self addChild:redCar];
@@ -138,6 +141,7 @@
 }
 
 // -----------------------------------------------------------------------
+
 
 - (void) update:(CCTime)delta
 {
@@ -190,6 +194,16 @@
     [message appendBytes:&msg_Angle length:sizeof(msg_Angle)];
     [message appendBytes:&msg_X_Vel length:sizeof(msg_X_Vel)];
     [message appendBytes:&msg_Y_Vel length:sizeof(msg_Y_Vel)];
+    
+    time += delta;
+    /*
+    float digit_min = time/60.0f;
+    float digit_sec = ((int)time%60);
+    
+    int min = (int)digit_min;
+    int seconds = (int)digit_sec;*/
+    
+    [timeLabel setString:[NSString stringWithFormat:@"Time: %.2f", time]];
     
     [mSession sendData:message toPeers:mPeers withDataMode:GKSendDataUnreliable error:nil];
 }
