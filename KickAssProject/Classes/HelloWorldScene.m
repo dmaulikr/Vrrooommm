@@ -82,7 +82,7 @@
     //bimage = [[UIImage alloc] initWithContentsOfFile:@"track1.png"];
     
     // Create a colored background
-    CCSprite *background = [CCSprite spriteWithImageNamed:@"track2.png"];
+    CCSprite *background = [CCSprite spriteWithImageNamed:@"track3.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     
