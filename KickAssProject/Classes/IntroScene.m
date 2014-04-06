@@ -38,12 +38,14 @@
     // Create a colored background (Dark Grey)
     CCSprite *background = [CCSprite spriteWithImageNamed:@"menu.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    background.scaleX = self.contentSize.width / 1024;
+    background.scaleY = self.contentSize.height / 768;
     [self addChild:background];
     
     // Helloworld scene button
     CCButton *helloWorldButton = [CCButton buttonWithTitle:@"MultiPlayer" fontName:@"Chalkduster" fontSize:36.0f];
     helloWorldButton.positionType = CCPositionTypeNormalized;
-    helloWorldButton.position = ccp(0.5f, 0.20f);
+    helloWorldButton.position = ccp(0.5f, 0.21f);
     [helloWorldButton setTarget:self selector:@selector(onMultiPlayerClicked:)];
     [self addChild:helloWorldButton];
     
@@ -57,7 +59,7 @@
     //LeaderBoard Scene Button
     CCButton *leaderBoardButton = [CCButton buttonWithTitle:@"LeaderBoard" fontName:@"Chalkduster" fontSize:36.0f];
     leaderBoardButton.positionType = CCPositionTypeNormalized;
-    leaderBoardButton.position = ccp(0.5f, 0.06);
+    leaderBoardButton.position = ccp(0.5f, 0.05);
     [leaderBoardButton setTarget:self selector:@selector(onLeaderboardClicked:)];
     [self addChild:leaderBoardButton];
 

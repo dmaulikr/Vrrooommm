@@ -78,6 +78,11 @@
     accl_x = 15;
     accl_y = 15;
     
+    //scale fo the ipod screen
+    winSize = [[CCDirector sharedDirector] viewSizeInPixels];
+    scale_x = self.contentSize.width/1024;
+    scale_y = self.contentSize.height/768;
+    
     
     // Enable touch handling on scene node
     self.userInteractionEnabled = YES;
@@ -85,20 +90,11 @@
     // Create a colored background
     CCSprite *background = [CCSprite spriteWithImageNamed:@"track3.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
-    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
-    
-    
-    
-    //scale fo the ipod screen
-    winSize = [[CCDirector sharedDirector] viewSizeInPixels];
-    scale_x = self.contentSize.width/1024;
-    scale_y = self.contentSize.height/768;
-    
     background.scaleX = scale_x;
     background.scaleY = scale_y;
-    
     [self addChild:background];
     
+    CCColor*black = [CCColor colorWithRed:0 green:0 blue:0];
     //GameKit Network
     if (self.multiPlayer) {
         mPicker = [[GKPeerPickerController alloc] init];
