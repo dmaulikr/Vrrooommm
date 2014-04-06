@@ -10,6 +10,7 @@
 // Import the interfaces
 #import "IntroScene.h"
 #import "HelloWorldScene.h"
+#import "LeaderboardScene.h"
 
 // -----------------------------------------------------------------------
 #pragma mark - IntroScene
@@ -57,7 +58,7 @@
     CCButton *leaderBoardButton = [CCButton buttonWithTitle:@"LeaderBoard" fontName:@"Chalkduster" fontSize:36.0f];
     leaderBoardButton.positionType = CCPositionTypeNormalized;
     leaderBoardButton.position = ccp(0.5f, 0.06);
-    //[leaderBoardButton setTarget:self selector:@selector(onSinglePlayerClicked:)];
+    [leaderBoardButton setTarget:self selector:@selector(onLeaderboardClicked:)];
     [self addChild:leaderBoardButton];
 
 
@@ -83,6 +84,14 @@
     [[CCDirector sharedDirector] replaceScene:scene
                                withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
     //[scene setMultiPlayer:NO];
+}
+
+- (void)onLeaderboardClicked:(id)sender
+{
+    LeaderboardScene *scene = [[LeaderboardScene alloc] init];
+    [[CCDirector sharedDirector] replaceScene:scene
+                               withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionUp duration:1.0f]];
+    //[scene setMultiPlayer:YES ];
 }
 
 
