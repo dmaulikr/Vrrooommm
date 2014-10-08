@@ -1,15 +1,11 @@
-KickAssProject
+Vrrooommmm
 ==============
 
-Important Dates
----------------
+An IOS game created using [Cocos2d](http://www.cocos2d-swift.org/) Library. This game was created as our final project for the mobile development class. The object of the game was to race other players around a track or play single player and compete for the fastest time.
 
-- April 2nd or 4th we have a presentation worth 5/20 marks (i just emailed gong asking if I could go on the 4th)
-- April 11th Project and Report are due 5/20 for the Report and 10/20 for the code
+### Features
+- Single player mode to race for the fastest time on the local leader board
+- Multiplayer to race against your friends with the game installed
+- Slide controls for easy manovouring
+- Used Box2d physics engine to detect collision and slow down cars on impact with walls or other cars
 
-### Project Details
-
-- Slot Car Racer
-- Car follows track
-- Car has a velocity and mass
-- Car velocity is sped up when the screen is touched and slowed down when the screen is released
